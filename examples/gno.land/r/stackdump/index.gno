@@ -1,23 +1,19 @@
 package www
 
-
-var body = `
-{
-"gnoMark": "frame",
-"frame": "gno-frame",
-"version": "<div> <h1>Stack Dump Example</h1> </div>"
-}
-`
-
 var htmlBody = `
 <div>
-    <h1>Stack Dump Example</h1>
-
-    <form action="/stackdump" method="post">
-        <label for="input">Enter some text:</label><br>
-        <input type="text" id="input" name="input"><br><br>
-        <input type="submit" value="Submit">
+    <form id='form' hx-encoding='multipart/form-data' hx-post='/upload'>
+        <input type='file' name='file'>
+        <button>
+            Upload
+        </button>
+        <progress id='progress' value='0' max='100'></progress>
     </form>
+    <script>
+        htmx.on('#form', 'htmx:xhr:progress', function(evt) {
+          htmx.find('#progress').setAttribute('value', evt.detail.loaded/evt.detail.total * 100)
+        });
+    </script>
 </div>
 `
 

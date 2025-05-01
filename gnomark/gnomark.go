@@ -19,6 +19,7 @@ var (
 	templateRegistry = map[string]func(string) string{
 		"frame": gnoFrameRender,
 		"html":  renderRawHTML,
+		"htmx":  renderHtmX,
 	}
 )
 
@@ -28,6 +29,16 @@ type gnoMarkBlock struct {
 }
 
 var _ ast.Node = (*gnoMarkBlock)(nil)
+
+var htmx = WebHost{
+	Base: "https://unpkg.com/htmx.org@",
+	Tag:  "2.0.4",
+	Path: "",
+}
+
+func renderHtmX(content string) string {
+	return "<script src=" + htmx.Cdn() + "></script>\n" + content
+}
 
 func renderRawHTML(content string) string {
 	// FIXME: sanitize the content if necessary
@@ -124,15 +135,21 @@ func (r *gnoMarkRenderer) RegisterFuncs(reg renderer.NodeRendererFuncRegisterer)
 }
 
 func containsScriptTag(content string) bool {
+	// TODO: maybe use a more robust HTML parser for this check
+
 	return strings.Contains(content, "<script>") || strings.Contains(content, "</script>")
 }
 
 func isValidFragment(content string) bool {
-	// TODO: add better validation logic if necessary
-	if containsScriptTag(content) {
-		return false
-	}
+	// XXX allow script
+	// if containsScriptTag(content) {
+	// 	return false
+	// }
 	return strings.Contains(content, "<div>") && strings.Contains(content, "</div>")
+}
+
+func isHtmxFragment(content string) bool {
+	return strings.Contains(content, "hx-")
 }
 
 func (r *gnoMarkRenderer) renderGnoMarkBlock(w util.BufWriter, source []byte, node ast.Node, entering bool) (ast.WalkStatus, error) {
@@ -152,7 +169,11 @@ func (r *gnoMarkRenderer) renderGnoMarkBlock(w util.BufWriter, source []byte, no
 	err := gnoMarkData.UnmarshalJSON([]byte(content))
 	if err != nil {
 		if isValidFragment(content) {
-			gnoMarkData.GnoMark = "html"
+			if isHtmxFragment(content) {
+				gnoMarkData.GnoMark = "htmx"
+			} else {
+				gnoMarkData.GnoMark = "html"
+			}
 		} else {
 			return ast.WalkStop, nil
 		}
