@@ -4,8 +4,8 @@ import (
 	"bytes"
 	"errors"
 	"fmt"
-	"github.com/gnolang/gno/gno.land/pkg/gnoweb"
 	"github.com/allinbits/gnoserve/components"
+	"github.com/gnolang/gno/gno.land/pkg/gnoweb"
 	"go/token"
 	"log/slog"
 	"net/http"
@@ -136,7 +136,7 @@ func (h *WebHandler) prepareIndexBodyView(r *http.Request, indexData *components
 	}
 
 	//indexData.HeadData.Title = h.Static.Domain + " - " + gnourl.Path
-	indexData.HeadData.Title = "gno-srv" + " - " + gnourl.Path
+	indexData.HeadData.Title = "gno-serve" + " - " + gnourl.Path
 	indexData.HeaderData = components.HeaderData{
 		Breadcrumb: generateBreadcrumbPaths(gnourl),
 		RealmURL:   *gnourl,

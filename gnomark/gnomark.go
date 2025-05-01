@@ -18,6 +18,7 @@ var (
 
 	templateRegistry = map[string]func(string) string{
 		"frame": gnoFrameRender,
+		"html":  renderRawHTML,
 	}
 )
 
@@ -27,6 +28,11 @@ type gnoMarkBlock struct {
 }
 
 var _ ast.Node = (*gnoMarkBlock)(nil)
+
+func renderRawHTML(content string) string {
+	// FIXME: sanitize the content if necessary
+	return content
+}
 
 func (b *gnoMarkBlock) Kind() ast.NodeKind {
 	return KindGnoMark
@@ -117,6 +123,18 @@ func (r *gnoMarkRenderer) RegisterFuncs(reg renderer.NodeRendererFuncRegisterer)
 	reg.Register(KindGnoMark, r.renderGnoMarkBlock)
 }
 
+func containsScriptTag(content string) bool {
+	return strings.Contains(content, "<script>") || strings.Contains(content, "</script>")
+}
+
+func isValidFragment(content string) bool {
+	// TODO: add better validation logic if necessary
+	if containsScriptTag(content) {
+		return false
+	}
+	return strings.Contains(content, "<div>") && strings.Contains(content, "</div>")
+}
+
 func (r *gnoMarkRenderer) renderGnoMarkBlock(w util.BufWriter, source []byte, node ast.Node, entering bool) (ast.WalkStatus, error) {
 	_ = source // source with tags
 	if !entering {
@@ -128,11 +146,16 @@ func (r *gnoMarkRenderer) renderGnoMarkBlock(w util.BufWriter, source []byte, no
 		return ast.WalkContinue, nil
 	}
 
-	jsonContent := strings.TrimSuffix(b.Content, "<gno-mark>")
+	content := strings.TrimSuffix(b.Content, "<gno-mark>") // FIXME: is this necessary?
 
 	var gnoMarkData GnoMarkData
-	if err := gnoMarkData.UnmarshalJSON([]byte(jsonContent)); err != nil {
-		return ast.WalkStop, err
+	err := gnoMarkData.UnmarshalJSON([]byte(content))
+	if err != nil {
+		if isValidFragment(content) {
+			gnoMarkData.GnoMark = "html"
+		} else {
+			return ast.WalkStop, nil
+		}
 	}
 
 	template, ok := templateRegistry[gnoMarkData.GnoMark]
@@ -141,7 +164,7 @@ func (r *gnoMarkRenderer) renderGnoMarkBlock(w util.BufWriter, source []byte, no
 		return ast.WalkStop, nil
 	}
 
-	_, _ = w.WriteString(template(jsonContent))
+	_, _ = w.WriteString(template(content))
 
 	return ast.WalkContinue, nil
 }
