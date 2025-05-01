@@ -1,4 +1,4 @@
-## `gnosrv`: Markdown Extensions for Gno.land
+## `gnoserve`: Markdown Extensions for Gno.land
 
 Interactive Extensions for gnodev Markdown Rendering
 
@@ -18,21 +18,21 @@ This lets Gno developers:
 
 ⚙️ Code-as-content meets content-as-interface.
 
-### What's New in `gnosrv` vs `gnoweb`
+### What's New in `gnoserve` vs `gnoweb`
 
-`gnosrv` introduces several enhancements over `gnoweb`, making it more powerful and flexible for Markdown rendering:
+`gnoserve` introduces several enhancements over `gnoweb`, making it more powerful and flexible for Markdown rendering:
 
 1. **Gno-Mark Support**:  
-   A new `<gno-mark>` tag is supported, which allows embedding JSON data directly into Markdown. This enables dynamic and interactive content to be rendered seamlessly.
+   A new `<gno-mark>` tag wraps all custom Markdown elements.
 
 2. **Additional Plugins**:  
    We have enabled several new plugins to extend Markdown functionality:
    - **`img64` Plugin**:  
-     This plugin allows images to be embedded as base64-encoded data, with caching tied to the page's lifetime. This solves common CDN-related issues and ensures reliable image delivery.
+     This plugin allows images to be embedded as base64-encoded data, with caching tied to the page's lifetime.
+     This solves common CDN-related issues and ensures reliable image delivery.
    - **`mermaid` Plugin**:  
-     We are excited to use Mermaid for creating diagrams and visualizations directly in Markdown. This makes it easier to include rich, interactive diagrams without external tools.
-   - **`figure` Plugin**:  
-     Adds support for enhanced image captions and figure elements, improving content presentation.
+     We are excited to use Mermaid for creating diagrams and visualizations directly in Markdown.
+     This makes it easier to include rich, interactive diagrams without external tools.
 
 3. **Improved Caching and Rendering**:  
    The `img64` plugin ensures that images are cached efficiently, reducing dependency on external resources and improving page load times.

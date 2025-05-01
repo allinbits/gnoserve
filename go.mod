@@ -6,8 +6,6 @@ require (
 	github.com/charmbracelet/lipgloss v1.1.1-0.20250404203927-76690c660834
 	github.com/gnolang/gno v0.0.0-20250415071522-a6aa4a1013a7
 	github.com/gnolang/gno/contribs/gnodev v0.0.0-20250415071522-a6aa4a1013a7
-	github.com/litao91/goldmark-mathjax v0.0.0-20210217064022-a43cf739a50f
-	github.com/mangoumbrella/goldmark-figure v1.2.0
 	github.com/mattn/go-isatty v0.0.20
 	github.com/muesli/termenv v0.16.0
 	github.com/tenkoh/goldmark-img64 v0.1.2
