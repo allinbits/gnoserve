@@ -3,11 +3,10 @@ package gnoframe
 var frame = `
     {
         "gnoMark": "frame",
-        "gnoFrame": "gno-frame",
+        "frame": "gno-frame",
         "version": "0.1.0",
         "name": "GnoFrame",
         "iconUrl": "https://cdn.jsdelivr.net/gh/allinbits/gnoserve@0.1.0/static/favicon.ico",
-        "frame": "gno-frame",
         "homeUrl": "https://gno.land",
         "imageUrl": "https://cdn.jsdelivr.net/gh/allinbits/gnoserve@0.1.0/static/android-chrome-512x512.png",
         "buttonTitle": "GnoFrame",
@@ -21,5 +20,5 @@ var gnoMarkStart = "<gno-mark>"
 var gnoMarkEnd = "</gno-mark>"
 
 func Render(_ string) string {
-	return "## GnoMark: frame\n\n"+ gnoMarkStart + "\n\n" + frame + "\n\n" + gnoMarkEnd
+	return "## GnoMark: frame\n\n" + gnoMarkStart + "\n\n" + frame + "\n\n" + gnoMarkEnd
 }

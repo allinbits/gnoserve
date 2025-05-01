@@ -3,6 +3,7 @@ package gnomark
 import (
 	"bytes"
 	"encoding/json"
+	"fmt"
 	"strings"
 
 	"github.com/gnolang/gno/gno.land/pkg/gnoweb"
@@ -14,12 +15,14 @@ import (
 )
 
 var (
-	KindGnoMark = ast.NewNodeKind("GnoMarkBlock")
+	KindGnoMark     = ast.NewNodeKind("GnoMarkBlock")
+	gnoMarkStartTag = []byte("<gno-mark>")
+	gnoMarkEndTag   = []byte("</gno-mark>")
 
 	templateRegistry = map[string]func(string) string{
-		"frame": gnoFrameRender,
-		"html":  renderRawHTML,
-		"htmx":  renderHtmX,
+		"frame":   gnoFrameRender,
+		"html":    noHtmlMsg,
+		"json+ld": renderJsonLd,
 	}
 )
 
@@ -29,21 +32,6 @@ type gnoMarkBlock struct {
 }
 
 var _ ast.Node = (*gnoMarkBlock)(nil)
-
-var htmx = WebHost{
-	Base: "https://unpkg.com/htmx.org@",
-	Tag:  "2.0.4",
-	Path: "",
-}
-
-func renderHtmX(content string) string {
-	return "<script src=" + htmx.Cdn() + "></script>\n" + content
-}
-
-func renderRawHTML(content string) string {
-	// FIXME: sanitize the content if necessary
-	return content
-}
 
 func (b *gnoMarkBlock) Kind() ast.NodeKind {
 	return KindGnoMark
@@ -57,9 +45,6 @@ func (b *gnoMarkBlock) Dump(source []byte, level int) {
 }
 
 type gnoMarkParser struct{}
-
-var gnoMarkStartTag = []byte("<gno-mark>")
-var gnoMarkEndTag = []byte("</gno-mark>")
 
 func (p *gnoMarkParser) Open(parent ast.Node, reader text.Reader, _ parser.Context) (ast.Node, parser.State) {
 	_ = parent // REVIEW: any benefit to using parent?
@@ -134,22 +119,9 @@ func (r *gnoMarkRenderer) RegisterFuncs(reg renderer.NodeRendererFuncRegisterer)
 	reg.Register(KindGnoMark, r.renderGnoMarkBlock)
 }
 
-func containsScriptTag(content string) bool {
-	// TODO: maybe use a more robust HTML parser for this check
-
-	return strings.Contains(content, "<script>") || strings.Contains(content, "</script>")
-}
-
+// XXX allow everything
 func isValidFragment(content string) bool {
-	// XXX allow script
-	// if containsScriptTag(content) {
-	// 	return false
-	// }
-	return strings.Contains(content, "<div>") && strings.Contains(content, "</div>")
-}
-
-func isHtmxFragment(content string) bool {
-	return strings.Contains(content, "hx-")
+	return true
 }
 
 func (r *gnoMarkRenderer) renderGnoMarkBlock(w util.BufWriter, source []byte, node ast.Node, entering bool) (ast.WalkStatus, error) {
@@ -169,14 +141,12 @@ func (r *gnoMarkRenderer) renderGnoMarkBlock(w util.BufWriter, source []byte, no
 	err := gnoMarkData.UnmarshalJSON([]byte(content))
 	if err != nil {
 		if isValidFragment(content) {
-			if isHtmxFragment(content) {
-				gnoMarkData.GnoMark = "htmx"
-			} else {
-				gnoMarkData.GnoMark = "html"
-			}
+			gnoMarkData.GnoMark = "html" // try to render as HTML (if enabled)
 		} else {
 			return ast.WalkStop, nil
 		}
+	} else {
+		fmt.Printf("gnoMarkData: %s", gnoMarkData.RawData)
 	}
 
 	template, ok := templateRegistry[gnoMarkData.GnoMark]
