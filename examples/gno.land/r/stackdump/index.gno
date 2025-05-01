@@ -1,6 +1,5 @@
 package www
 
-
 var htmlBody = `
 <div>
     <form id='form' hx-encoding='multipart/form-data' hx-post='/upload'>

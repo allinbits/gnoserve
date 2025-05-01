@@ -136,11 +136,11 @@ func (r *gnoMarkRenderer) RegisterFuncs(reg renderer.NodeRendererFuncRegisterer)
 
 func containsScriptTag(content string) bool {
 	// TODO: maybe use a more robust HTML parser for this check
+
 	return strings.Contains(content, "<script>") || strings.Contains(content, "</script>")
 }
 
 func isValidFragment(content string) bool {
-	// TODO: add better validation logic if necessary
 	// XXX allow script
 	// if containsScriptTag(content) {
 	// 	return false
@@ -163,7 +163,7 @@ func (r *gnoMarkRenderer) renderGnoMarkBlock(w util.BufWriter, source []byte, no
 		return ast.WalkContinue, nil
 	}
 
-	content := strings.TrimSuffix(b.Content, "<gno-mark>")
+	content := strings.TrimSuffix(b.Content, "<gno-mark>") // FIXME: is this necessary?
 
 	var gnoMarkData GnoMarkData
 	err := gnoMarkData.UnmarshalJSON([]byte(content))
