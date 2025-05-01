@@ -17,8 +17,7 @@ var (
 	KindGnoMark = ast.NewNodeKind("GnoMarkBlock")
 
 	templateRegistry = map[string]func(string) string{
-		"petrinet": petriNetRender,
-		"frame":    gnoFrameRender,
+		"frame": gnoFrameRender,
 	}
 )
 

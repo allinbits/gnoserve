@@ -5,7 +5,6 @@ import (
 	"fmt"
 	"github.com/gnolang/gno/tm2/pkg/bft/rpc/client"
 	"log/slog"
-	"strings"
 )
 
 const renderPath = "vm/qrender"
@@ -59,13 +58,4 @@ func setupPolling(ctx context.Context, logger *slog.Logger, remoteAddr string) {
 	// 		}
 	// 	}
 	// }()
-}
-
-// TODO: actually remove
-func exampleTest() {
-	importedCid := cid.NewCid(importedModel).String()
-	modelCid := cid.NewCid(exampleModel).String()
-	if importedCid != modelCid {
-		panic("Expected CIDs to match, got " + importedCid + " != " + modelCid)
-	}
 }
