@@ -3,7 +3,6 @@ package gnomark
 import (
 	"bytes"
 	"encoding/json"
-	"fmt"
 	"strings"
 
 	"github.com/gnolang/gno/gno.land/pkg/gnoweb"
@@ -146,7 +145,7 @@ func (r *gnoMarkRenderer) renderGnoMarkBlock(w util.BufWriter, source []byte, no
 			return ast.WalkStop, nil
 		}
 	} else {
-		fmt.Printf("gnoMarkData: %s", gnoMarkData.RawData)
+		//fmt.Printf("gnoMarkData: %s", gnoMarkData.RawData)
 	}
 
 	template, ok := templateRegistry[gnoMarkData.GnoMark]

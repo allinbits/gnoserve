@@ -3,11 +3,11 @@ package main
 import (
 	"encoding/json"
 	"fmt"
+	"github.com/allinbits/gnoserve/gnomark"
+	"github.com/allinbits/gnoserve/handler"
 	"github.com/gnolang/gno/gno.land/pkg/gnoweb"
 	"github.com/gnolang/gno/gno.land/pkg/gnoweb/components"
 	"github.com/gnolang/gno/tm2/pkg/bft/rpc/client"
-	"github.com/allinbits/gnoserve/gnomark"
-	"github.com/allinbits/gnoserve/handler"
 	"github.com/yuin/goldmark"
 	mdhtml "github.com/yuin/goldmark/renderer/html"
 	"log/slog"
