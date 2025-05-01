@@ -7,8 +7,8 @@ import (
 
 var (
 	gnoFrameWebHost = &WebHost{
-		Base: "https://cdn.jsdelivr.net/gh/pflow-xyz/pflow-dapp@",
-		Tag:  "0.2.0",
+		Base: "https://cdn.jsdelivr.net/gh/allinbits/gnoserve@",
+		Tag:  "0.1.0",
 		Path: "/static/",
 	}
 )
