@@ -1,0 +1,23 @@
+package www
+
+
+var htmlBody = `
+<div>
+    <form id='form' hx-encoding='multipart/form-data' hx-post='/upload'>
+        <input type='file' name='file'>
+        <button>
+            Upload
+        </button>
+        <progress id='progress' value='0' max='100'></progress>
+    </form>
+    <script>
+        htmx.on('#form', 'htmx:xhr:progress', function(evt) {
+          htmx.find('#progress').setAttribute('value', evt.detail.loaded/evt.detail.total * 100)
+        });
+    </script>
+</div>
+`
+
+func Render(_ string) string {
+    return "<gno-mark>\n\n" + htmlBody + "\n\n</gno-mark>"
+}
