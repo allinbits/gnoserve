@@ -5,7 +5,7 @@ import (
 	"errors"
 	"fmt"
 	"github.com/gnolang/gno/gno.land/pkg/gnoweb"
-	"github.com/pflow-xyz/pflow-dapp/components"
+	"github.com/allinbits/gnoserve/components"
 	"go/token"
 	"log/slog"
 	"net/http"

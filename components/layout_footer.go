@@ -21,20 +21,20 @@ func EnrichFooterData(data FooterData) FooterData {
 		{
 			Title: "Footer navigation",
 			Links: []FooterLink{
-				{Label: "About", URL: "/about"},
-				{Label: "Docs", URL: "https://docs.gno.land/"},
-				{Label: "Faucet", URL: "https://faucet.gno.land/"},
-				{Label: "Blog", URL: "https://blog.stackdump.com"},
-				{Label: "Status", URL: "#"},
+				//{Label: "About", URL: "/about"},
+				//{Label: "Docs", URL: "https://docs.gno.land/"},
+				//{Label: "Faucet", URL: "https://faucet.gno.land/"},
+				//{Label: "Blog", URL: "https://gno.land/r/gnoland/blog"},
+				//{Label: "Status", URL: "#"},
 			},
 		},
 		{
 			Title: "Social media",
 			Links: []FooterLink{
-				{Label: "GitHub", URL: "https://github.com/pflow-xyz/pflow-dapp"},
-				{Label: "Twitter", URL: "https://twitter.com/stackdump.eth"},
-				{Label: "Mastodon", URL: "https://fosstodon.org/@stackdump"},
-				{Label: "Warpcast", URL: "https://warpcast.com/stackdump.eth"},
+				{Label: "GitHub", URL: "https://github.com/allinbits/gnoserve"},
+				//{Label: "Twitter", URL: "#"},
+				//{Label: "Discord", URL: "#"},
+				//{Label: "Youtube", URL: "#"},
 			},
 		},
 		{

@@ -11,18 +11,6 @@ var (
 		Tag:  "0.2.0",
 		Path: "/static/",
 	}
-
-	defaultFrame = Frame{
-		Version:               "0.1.0",
-		Name:                  "GnoFrame",
-		IconURL:               gnoFrameWebHost.Cdn() + "gno-frame.png",
-		HomeURL:               "https://gno.land",
-		ImageURL:              gnoFrameWebHost.Cdn() + "gno-frame.png",
-		ButtonTitle:           "GnoFrame",
-		SplashImageURL:        gnoFrameWebHost.Cdn() + "gno-frame.png",
-		SplashBackgroundColor: "#ffffff",
-		WebhookURL:            "https://gno.land/webhook",
-	}
 )
 
 func (f Frame) ToJson() []byte {
