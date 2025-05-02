@@ -4,6 +4,8 @@ Interactive Extensions for gnodev Markdown Rendering
 
 https://gnoserve.fly.dev/ <- try it out on fly.io
 
+Read More [on notion](https://allinbits.notion.site/GnoFrame-1e0302c277ee80c3b9e0e1c41eebbb65).
+
 ### Motivation
 
 We want to push Markdown beyond static text — without losing its simplicity.
