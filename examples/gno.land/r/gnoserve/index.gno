@@ -12,7 +12,8 @@ With GnoServe, you can build unique, interactive experiences while maintaining f
 
 ## Posts
 ### [GnoFrame Spec v0](./gnoframe) - See prototype of GnoFrame
-### [GnoFrame Json+LD](./jsonld) - Support structured data using ld+json
+### [Goldmark JsonLD ext](./jsonld) - Support structured data using ld+json
+### [Mermaid Markdown](./mermaid) - Support Mermaid diagrams in Markdown
 
 `
 

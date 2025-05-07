@@ -9,6 +9,8 @@ import (
 	"github.com/yuin/goldmark/util"
 	"go.abhg.dev/goldmark/mermaid"
 	"net/http"
+
+	"github.com/allinbits/gnoserve/jsonld"
 )
 
 // GnoMarkExtension is the Goldmark extension adding block parsers and renderers
@@ -42,4 +44,7 @@ func (e *GnoMarkExtension) Extend(m goldmark.Markdown) {
 
 	// Enable auto heading IDs for better linking
 	m.Parser().AddOptions(parser.WithAutoHeadingID())
+
+	// Setup JSON-LD extension
+	jsonld.NewJSONLDExtension().Extend(m)
 }

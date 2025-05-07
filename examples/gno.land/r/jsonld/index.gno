@@ -1,63 +1,33 @@
 package www
 
-var frame = `
-    {
-        "gnoMark": "json+ld",
-        "json+ld": ` + jsonLd + `
-    }
-`
+import "net/url"
 
-var jsonLd = `
- {
-      "@context": "https://schema.org",
-      "@type": "Event",
-      "name": "The Adventures of Kira and Morrison",
-      "startDate": "2025-07-21T19:00-05:00",
-      "endDate": "2025-07-21T23:00-05:00",
-      "eventAttendanceMode": "https://schema.org/OfflineEventAttendanceMode",
-      "eventStatus": "https://schema.org/EventScheduled",
-      "location": {
-        "@type": "Place",
-        "name": "Snickerpark Stadium",
-        "address": {
-          "@type": "PostalAddress",
-          "streetAddress": "100 West Snickerpark Dr",
-          "addressLocality": "Snickertown",
-          "postalCode": "19019",
-          "addressRegion": "PA",
-          "addressCountry": "US"
-        }
-      },
-      "image": [
-        "https://example.com/photos/1x1/photo.jpg",
-        "https://example.com/photos/4x3/photo.jpg",
-        "https://example.com/photos/16x9/photo.jpg"
-       ],
-      "description": "The Adventures of Kira and Morrison is coming to Snickertown in a can't miss performance.",
-      "offers": {
-        "@type": "Offer",
-        "url": "https://www.example.com/event_offer/12345_202403180430",
-        "price": 30,
-        "priceCurrency": "USD",
-        "availability": "https://schema.org/InStock",
-        "validFrom": "2024-05-21T12:00"
-      },
-      "performer": {
-        "@type": "PerformingGroup",
-        "name": "Kira and Morrison"
-      },
-      "organizer": {
-        "@type": "Organization",
-        "name": "Kira and Morrison Music",
-        "url": "https://kiraandmorrisonmusic.com"
-      }
-    }
-`
+var (
+	jsonLd = `{
+      "@context": "https://schema.org"
+}`
 
-const message = "## GnoMark: json+ld\n\n supports structured data in JSON-LD format." +
-	" &lt;gno-mark&gt;json+ld&lt;/gno-mark&gt; "
+	viewSourceSVGButton = `<svg xmlns="http://www.w3.org/2000/svg" width="200" height="34" viewBox="0 0 200 24">
+<rect width="110" height="24" fill="#f0f0f0" stroke="#cccccc" stroke-width="1" rx="4" ry="4" filter="url(#shadow)"/>
+<text x="10" y="18" font-family="Arial, sans-serif" font-size="16" fill="#000000">View Source</text>
+<defs>
+  <filter id="shadow" x="-10%" y="-10%" width="120%" height="120%">
+    <feOffset result="offOut" in="SourceAlpha" dx="2" dy="2" />
+    <feGaussianBlur result="blurOut" in="offOut" stdDeviation="2" />
+    <feBlend in="SourceGraphic" in2="blurOut" mode="normal" />
+  </filter>
+</defs>
+</svg>`
+
+	dataUrl = "data:image/svg+xml;utf-8," + url.PathEscape(viewSourceSVGButton)
+
+	message = "## jsonld Example\n\n" +
+		"This is a simple example of JSON-LD formatted data.\n\n" +
+		"which is inserted into the page using &lt;script type=\"application/ld+json\"&gt;.\n\n" +
+		"view the source to see how this is done:" + "[![View Source](" + dataUrl + ")](jsonld$source)"
+)
 
 func Render(_ string) string {
-	return message + "\n\n```\n\n" + jsonLd + "\n\n```\n\n" +
-		"<gno-mark>\n\n" + frame + "\n\n</gno-mark>"
+	return message + "\n\n" +
+		"```jsonld\n\n" + jsonLd + "\n\n```"
 }

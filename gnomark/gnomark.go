@@ -19,9 +19,9 @@ var (
 	gnoMarkEndTag   = []byte("</gno-mark>")
 
 	templateRegistry = map[string]func(string) string{
-		"frame":   gnoFrameRender,
-		"html":    noHtmlMsg,
-		"json+ld": renderJsonLd,
+		"frame": gnoFrameRender,
+		"html":  noHtmlMsg,
+		// "json+ld": renderJsonLd, // REVIEW: replaced as a fenced code block extension
 	}
 )
 
