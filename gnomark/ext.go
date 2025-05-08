@@ -5,8 +5,6 @@ import (
 	img64 "github.com/tenkoh/goldmark-img64"
 	"github.com/yuin/goldmark"
 	"github.com/yuin/goldmark/parser"
-	"github.com/yuin/goldmark/renderer"
-	"github.com/yuin/goldmark/util"
 	"go.abhg.dev/goldmark/mermaid"
 	"net/http"
 
@@ -35,12 +33,7 @@ func (e *GnoMarkExtension) Extend(m goldmark.Markdown) {
 	m.Renderer().AddOptions(img64.WithFileReader(img64.AllowRemoteFileReader(http.DefaultClient)))
 
 	// Setup Gnomark
-	m.Parser().AddOptions(parser.WithBlockParsers(
-		util.Prioritized(&gnoMarkParser{}, 500),
-	))
-	m.Renderer().AddOptions(renderer.WithNodeRenderers(
-		util.Prioritized(&gnoMarkRenderer{client: e.Client}, 500),
-	))
+	NewGnoMarkExtension().Extend(m)
 
 	// Enable auto heading IDs for better linking
 	m.Parser().AddOptions(parser.WithAutoHeadingID())

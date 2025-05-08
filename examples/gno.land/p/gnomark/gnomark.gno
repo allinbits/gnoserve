@@ -5,10 +5,15 @@ import (
 )
 
 // TODO: build an interface and registry for parsers and renderers
-// make this dyamic (after POC proving call out to gno will work
-var (
-	KindPetriNet = "PetriNetBlock"
+// convert this example to be hosted as a template frame in the new registry
 
+type WebHost struct {
+    Base string
+    Tag  string
+    Path string
+}
+
+var (
 	webHost = &WebHost{
 		Base: "https://cdn.jsdelivr.net/gh/pflow-xyz/pflow-app@",
 		Tag:  "0.2.1",
@@ -16,61 +21,11 @@ var (
 	}
 )
 
-// pflowBlock represents a custom block for pflow.
-type pflowBlock struct {
-	JSONContent string
-}
-
-// pflowParser parses the custom <petri-net> block.
-type pflowParser struct{}
-
-var startTag = "<petri-net>"
-var endTag = "</petri-net>"
-
-func (p *pflowParser) Parse(input string) *pflowBlock {
-	lines := strings.Split(input, "\n")
-	var block *pflowBlock
-	for _, line := range lines {
-		if strings.HasPrefix(line, startTag) {
-			block = &pflowBlock{}
-			continue
-		}
-		if strings.HasPrefix(line, endTag) {
-			break
-		}
-		if block != nil {
-			block.JSONContent += line + "\n"
-		}
-	}
-	return block
-}
-
-// pflowRenderer renders the pflow block as HTML.
-type pflowRenderer struct{}
-
-func (r *pflowRenderer) Render(block *pflowBlock) string {
-	if block == nil {
-		return ""
-	}
-	return Render(block.JSONContent)
-}
-
-// WebHost represents the CDN configuration.
-type WebHost struct {
-	Base string
-	Tag  string
-	Path string
-}
-
-func (h *WebHost) Cdn() string {
-	return h.Base + h.Tag + h.Path
-}
-
-// Render generates the HTML for the pflow block.
-func Render(source string) string {
+func render(source string) string {
 	return templateHtml("{CDN}", webHost.Cdn(), source)
 }
 
+// REVIEW: make this more generic
 func templateHtml(key, value, source string) string {
 	out := strings.ReplaceAll(htmlContent, key, value)
 	return strings.ReplaceAll(out, "{SOURCE}", source)
