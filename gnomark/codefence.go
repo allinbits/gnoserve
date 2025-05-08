@@ -42,19 +42,10 @@ func (r *gnoMarkRenderer) renderGnoMarkBlock(w util.BufWriter, source []byte, no
 		return ast.WalkContinue, nil
 	}
 
-	language := string(block.Language(source))
-	if language != "gnomark" {
-		return ast.WalkContinue, nil
-	}
-	content := string(block.Text(source))
-	gnoMarkType := getGnoMarkType(content)
-	template, ok := templateRegistry[gnoMarkType]
-	if !ok {
-		return ast.WalkStop, nil
-	}
+	// FIXME: .Text is deprecated
+	err := renderCodeBlock(w, string(block.Language(source)), block.Text(source))
 
-	_, _ = w.WriteString(template(content))
-	return ast.WalkContinue, nil
+	return ast.WalkContinue, err
 }
 
 // gnoMarkExtension is the Goldmark extension for gomark fenced code blocks.
@@ -72,4 +63,42 @@ func (e *gnoMarkExtension) Extend(m goldmark.Markdown) {
 // NewGnoMarkExtension creates a new gomark extension.
 func NewGnoMarkExtension() *gnoMarkExtension {
 	return &gnoMarkExtension{}
+}
+
+func renderCodeBlock(w util.BufWriter, language string, source []byte) error {
+	switch language {
+	case "jsonld":
+		return renderJsonLD(w, source)
+	case "gnomark":
+		return renderFrameTemplate(w, source)
+	default:
+		return renderFencedGeneric(w, source)
+	}
+}
+
+func renderFencedGeneric(w util.BufWriter, source []byte) error {
+	_, _ = w.WriteString(`<pre><code>`)
+	_, _ = w.Write(source)
+	_, _ = w.WriteString(`</code></pre>`)
+	return nil
+}
+
+func renderJsonLD(w util.BufWriter, source []byte) error {
+	_, _ = w.WriteString(`<script type="application/ld+json">`)
+	_, _ = w.Write(source)
+	_, _ = w.WriteString(`</script>`)
+	return nil
+}
+
+func renderFrameTemplate(w util.BufWriter, source []byte) error {
+	content := string(source)
+	gnoMarkType := getGnoMarkType(content)
+	template, ok := templateRegistry[gnoMarkType]
+	if ok {
+		_, _ = w.WriteString(template(content))
+	} else {
+		_, _ = w.WriteString("<pre><code>Unsupported gnoMark type</code></pre>")
+	}
+
+	return nil
 }
