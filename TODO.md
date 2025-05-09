@@ -7,18 +7,16 @@ BACKLOG
 -------
 - [ ] build a template mechanism that depends on functions deployed to gno.land
     - try out gno functions (call out to realm to render template) - as MD extensions
-     
-- [ ] remove all hardcoded configs like starting realm path - support a config file or env var
+
  
-- [ ] Build image/object index on chain - add widget to reference on-chain data
+- [ ] (try to use jsonld) Build image/object index on chain - add widget to reference on-chain data
     - can/should we allow a realm to reference other realms' data via widget? 
     - this would be a tag like: { "gnoMark": "render" realm: "r/otherrealm", path: "/path/to/data" }
     - path would be used for args
- 
-- [ ] add whitelist of html tags we allow inside <gno-mark> blocks
-    - can we use the existing goldmark sanitizer?
 
-- [ ] try 250*250 bmp grid - png rendering collaborative drawing app
+- [ ] remove all hardcoded configs in this repo - like starting realm path - support a config file or env var
+
+- [ ] 'reddit place' demo - try 250*250 bmp grid - png rendering collaborative drawing app
  
   DONE
 ----

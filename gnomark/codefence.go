@@ -65,7 +65,16 @@ func NewGnoMarkExtension() *gnoMarkExtension {
 	return &gnoMarkExtension{}
 }
 
+func isValidJson(data []byte) bool {
+	var js json.RawMessage
+	return json.Unmarshal(data, &js) == nil
+}
+
 func renderCodeBlock(w util.BufWriter, language string, source []byte) error {
+	if !isValidJson(source) {
+		_, _ = w.WriteString(noHtmlMsg(""))
+		return nil
+	}
 	switch language {
 	case "jsonld":
 		return renderJsonLD(w, source)
@@ -99,6 +108,5 @@ func renderFrameTemplate(w util.BufWriter, source []byte) error {
 	} else {
 		_, _ = w.WriteString("<pre><code>Unsupported gnoMark type</code></pre>")
 	}
-
 	return nil
 }
