@@ -2,9 +2,23 @@
 
 Interactive Extensions for gnodev Markdown Rendering
 
+Status: Pre-Alpha
+
+KNOWN ISSUES
+------------
+- lots of copy/paste from gnodev - need to refactor upstream interfaces
+- support loading in staging or localdev - currently only READONLY ux
+- does not expose RPC for the local test chain
+- lacking a standard for *extra* metadata (i.e. structured data)
+- lacking *extra* API routes to support RSS or other standards
+  
 https://gnoserve.fly.dev/ <- try it out on fly.io
 
 Read More [on notion](https://allinbits.notion.site/GnoFrame-1e0302c277ee80c3b9e0e1c41eebbb65).
+
+### Contribute
+
+Feel free to open an PR to ask for potential features / support
 
 ### Motivation
 
