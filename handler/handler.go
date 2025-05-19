@@ -73,6 +73,11 @@ func (h *WebHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	if strings.HasPrefix(r.URL.Path, "/calendar/") {
+		h.RenderCalendar(w, r)
+		return
+	}
+
 	// event index.gno - renders the index.gno events in an ical format
 	if strings.HasPrefix(r.URL.Path, "/index.gno/") {
 		h.RenderCalendar(w, r)
