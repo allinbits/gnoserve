@@ -9,7 +9,6 @@ import (
 	"go/token"
 	"log/slog"
 	"net/http"
-	"os"
 	"path"
 	"slices"
 	"strings"
@@ -70,31 +69,13 @@ func (h *WebHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	// TODO: only enable this for dev mode
 	// for on-chain use a CDN (https://www.jsdelivr.com/ is free for open source)
 	if strings.HasPrefix(r.URL.Path, "/static/") {
-		staticDir := "./static"
-		filePath := path.Join(staticDir, strings.TrimPrefix(r.URL.Path, "/static/"))
-		isHtml := strings.HasSuffix(r.URL.Path, ".html")
-		if r.URL.Path == "/static/" {
-			isHtml = true
-			filePath = path.Join(staticDir, "index.html")
-		}
+		h.RenderStaticFile(w, r)
+		return
+	}
 
-		fs := http.StripPrefix("/static/", http.FileServer(http.Dir(staticDir)))
-
-		if isHtml {
-			// KLUDGE: getting a content length error when tyring to use FileServer for html
-			// so we read the file and write it to the response for now
-			fileData, err := os.ReadFile(filePath)
-			if err != nil {
-				h.Logger.Error("unable to read file", "file", filePath, "error", err)
-				http.Error(w, "file not found", http.StatusNotFound)
-				return
-			}
-			w.Header().Set("Content-Type", "text/html; charset=utf-8")
-			w.WriteHeader(http.StatusOK)
-			w.Write(fileData)
-			return
-		}
-		fs.ServeHTTP(w, r)
+	// event index.gno - renders the index.gno events in an ical format
+	if strings.HasPrefix(r.URL.Path, "/index.gno/") {
+		h.RenderCalendar(w, r)
 		return
 	}
 
