@@ -1,34 +1,29 @@
 WIP
 ---
 
-Gnoserve initial setup and features
+Gnoserve - prototyping gno-frame design
+
 
 BACKLOG
 -------
-- [ ] build a template mechanism that depends on functions deployed to gno.land
-    - try out gno functions (call out to realm to render template) - as MD extensions
 
- 
-- [ ] (try to use jsonld) Build image/object index on chain - add widget to reference on-chain data
-    - can/should we allow a realm to reference other realms' data via widget? 
-    - this would be a tag like: { "gnoMark": "render" realm: "r/otherrealm", path: "/path/to/data" }
-    - path would be used for args
+- [ ] 'reddit place' demo - try 250*250 bmp grid - png rendering collaborative drawing app
+    - [ ] use gno js client to test rendering larger SVGs
+
+- [ ] test/fix json+ld codefence support - does it work properly?
 
 - [ ] remove all hardcoded configs in this repo - like starting realm path - support a config file or env var
 
-- [ ] 'reddit place' demo - try 250*250 bmp grid - png rendering collaborative drawing app
+- [ ] implement RSS feed using r/gnoserve posts as a feed
  
   DONE
 ----
-- [x] support image hosting use case from realm /r/stackdump/www /r/stackdump/bmp:filename.jpg
-    - Used the img64 markdown plugin to host images embedded in page
-- [x] add GnoFrame tag support - roughly equivalent to farcaster frames
-- [x] consider implementing a frontend-only solution to template rendering
-  we could still lint the json body on the server side and then render it on the client side
-  https://developer.mozilla.org/en-US/docs/Web/API/Web_components/Using_custom_elements#implementing_a_custom_element
+- [x] (try to use jsonld) Build image/object index on chain - add widget to reference on-chain data
 
 ICEBOX
 ------
+- [ ] build a template mechanism that depends on functions deployed to gno.land
+   - try out gno functions (call out to realm to render template) - as MD extensions
 - [ ] Consider Refactor could we depend on gnoweb and/or gnodev in a better way?
 - [ ] support realm index/search
 - [ ] add a means to let users add gnoweb endpoints to an onchain registry

@@ -13,9 +13,9 @@ func (h *WebHandler) RenderStaticFile(w http.ResponseWriter, r *http.Request) {
 	prefix := "/static/"
 	filePath := r.URL.Path
 	isHtml := strings.HasSuffix(filePath, ".html")
-	if filePath == prefix {
+	if strings.HasSuffix(filePath, "/") {
 		isHtml = true
-		filePath = path.Join(staticDir, "index.html")
+		filePath = path.Join(staticDir, strings.TrimPrefix(filePath, prefix), "index.html")
 	} else {
 		filePath = path.Join(staticDir, strings.TrimPrefix(filePath, prefix))
 	}
