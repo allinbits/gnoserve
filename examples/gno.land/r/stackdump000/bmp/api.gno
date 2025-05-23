@@ -21,6 +21,7 @@ func allowPatchesFromSubRealms() {
 }
 
 func hasAllowedPrefix() bool {
+    //  TODO update after cross/crossing support is finalized
 	prevRealm := std.PreviousRealm()
 	for _, callerPath := range realmAllowPrefix {
 		if strings.HasPrefix(prevRealm.PkgPath(), callerPath) {
@@ -38,8 +39,8 @@ func assertAccess() {
 }
 
 // assertValidName controls the name of the image by the caller path
-// ex1: /r/stackdump/bmp/v0.0.1_profile is allowed to set "profile" image
-// ex2: /r/stackdump/bmp/v0.0.1/subfolder/profile is allowed to set "profile" image
+// ex1: /r/stackdump000/bmp/v0.0.1_profile is allowed to set "profile" image
+// ex2: /r/stackdump000/bmp/v0.0.1/subfolder/profile is allowed to set "profile" image
 func assertValidName(name string) {
 	if !strings.HasSuffix(std.PreviousRealm().PkgPath(), name) {
 		panic("invalid name: " + name + " must end with " + std.PreviousRealm().PkgPath())
