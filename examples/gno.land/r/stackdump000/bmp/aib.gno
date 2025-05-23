@@ -1,26 +1,18 @@
-package aib
-
-import (
-	image "gno.land/r/stackdump000/bmp"
-)
+package bmp
 
 type Aib struct{}
 
-var _ image.ImageApi = &Aib{}
+var _ ImageApi = &Aib{}
 
-func init() {
-	image.Register("aib", Aib{})
-}
-
-func (Aib) Bounds() image.Bounds {
-	return image.Bounds{X1: 8, Y1: 6, X2: 41, Y2: 37}
+func (Aib) Bounds() Bounds {
+	return Bounds{X1: 8, Y1: 6, X2: 41, Y2: 37}
 }
 
 func (Aib) Description() string {
-    return "Aib | AIB logo | 50x50 pixels"
+	return "Aib | AIB logo | 50x50 pixels"
 }
 
-func (Aib) Pixels(p image.PixelSetter) {
+func (Aib) Pixels(p PixelSetter) {
 	p(8, 6, 135, 203, 54)
 	p(8, 7, 134, 200, 56)
 	p(8, 8, 132, 198, 55)

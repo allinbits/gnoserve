@@ -1,26 +1,18 @@
-package gnome
-
-import (
-	image "gno.land/r/stackdump000/bmp"
-)
+package bmp
 
 type Gnome struct{}
 
-var _ image.ImageApi = &Gnome{}
+var _ ImageApi = &Gnome{}
 
-func init() {
-	image.Register("gnome", Gnome{})
-}
-
-func (Gnome) Bounds() image.Bounds {
-	return image.Bounds{X1: 0, Y1: 0, X2: 50, Y2: 50}
+func (Gnome) Bounds() Bounds {
+	return Bounds{X1: 0, Y1: 0, X2: 50, Y2: 50}
 }
 
 func (Gnome) Description() string {
-    return "Gnome | A pixelated gnome"
+	return "Gnome | A pixelated gnome"
 }
 
-func (Gnome) Pixels(p image.PixelSetter) {
+func (Gnome) Pixels(p PixelSetter) {
 	p(9, 22, 254, 254, 254)
 	p(9, 23, 250, 251, 251)
 	p(9, 24, 239, 244, 243)

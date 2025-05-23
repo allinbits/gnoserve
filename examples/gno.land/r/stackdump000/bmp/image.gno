@@ -1,12 +1,14 @@
 package bmp
 
 import (
-	"gno.land/p/demo/ufmt"
 	"net/url"
 	"strings"
+
+	"gno.land/p/demo/ufmt"
 )
 
 const GridWidth = 51
+
 // FIXME: getting this error rendering gnocap
 // review grid calculations
 // "node response error: slice index out of bounds: 2609

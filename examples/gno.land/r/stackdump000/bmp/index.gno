@@ -1,10 +1,11 @@
 package bmp
 
 import (
-	"gno.land/p/demo/avl"
-	"gno.land/p/demo/ufmt"
 	"std"
 	"strings"
+
+	"gno.land/p/demo/avl"
+	"gno.land/p/demo/ufmt"
 )
 
 var (
@@ -14,6 +15,10 @@ var (
 
 func init() {
 	allowPatchesFromSubRealms()
+	registry.Set("profile", Profile{})
+	registry.Set("gnome", Gnome{})
+	registry.Set("aib", Aib{})
+	registry.Set("sierpinski", Triangle{})
 }
 
 func allowPatchesFromSubRealms() {
@@ -102,7 +107,7 @@ func renderList(selected string) string {
 func getImageApi(path string) ImageApi {
 	imgHandler, ok := registry.Get(path)
 	if !ok {
-		panic("path not registered: " + path)
+		panic("path not registered - (in dev?) make sure realm is deployed: r/stackdump000/bmp/" + path)
 	}
 	return imgHandler.(ImageApi)
 }

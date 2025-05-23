@@ -8,9 +8,9 @@ import (
 // convert this example to be hosted as a template frame in the new registry
 
 type WebHost struct {
-    Base string
-    Tag  string
-    Path string
+	Base string
+	Tag  string
+	Path string
 }
 
 var (

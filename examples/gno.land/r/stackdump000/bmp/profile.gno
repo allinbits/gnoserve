@@ -1,26 +1,18 @@
-package profile
-
-import (
-	image "gno.land/r/stackdump000/bmp"
-)
+package bmp
 
 type Profile struct{}
 
-var _ image.ImageApi = &Profile{}
+var _ ImageApi = &Profile{}
 
-func init() {
-	image.Register("profile", Profile{})
+func (Profile) Description() string {
+	return "GnoCap: a creative commons | collectively editing 250x250 pixels"
 }
 
-func(Profile) Description() string {
-    return "GnoCap: a creative commons | collectively editing 250x250 pixels"
+func (Profile) Bounds() Bounds {
+	return Bounds{X1: 4, Y1: 0, X2: 45, Y2: 25}
 }
 
-func (Profile) Bounds() image.Bounds {
-	return image.Bounds{X1: 4, Y1: 0, X2: 45, Y2: 25}
-}
-
-func (Profile) Pixels(p image.PixelSetter) {
+func (Profile) Pixels(p PixelSetter) {
 	p(0, 0, 10, 32, 38)
 	p(1, 0, 10, 36, 38)
 	p(2, 0, 9, 35, 38)
