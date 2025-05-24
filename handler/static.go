@@ -25,7 +25,7 @@ func (h *WebHandler) RenderStaticFile(w http.ResponseWriter, r *http.Request) {
 	if isHtml {
 		// trim the leading /static/ from the file path
 		fmt.Printf("serving html file: %s\n", filePath)
-		// KLUDGE: getting a content length error when tyring to use FileServer for html
+		// KLUDGE: getting a content length error when trying to use FileServer for html
 		// so we read the file and write it to the response for now
 		fileData, err := os.ReadFile(filePath)
 		if err != nil {

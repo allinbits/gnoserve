@@ -5,7 +5,6 @@ import (
 	"strings"
 
 	"gno.land/p/demo/avl"
-	"gno.land/p/demo/ufmt"
 )
 
 var (
@@ -128,17 +127,13 @@ func Svg(name string) string {
 }
 
 func Render(path string) (out string) {
-	defer func() {
-		if r := recover(); r != nil {
-			out = ufmt.Sprint(r)
-		}
-	}()
 	args := []string{}
+    svg := strings.HasSuffix(path, ":svg")
 	if path == "" {
 		path = "profile"
 	} else {
 		args = strings.Split(path, ":")
-		if len(args) > 1 {
+		if len(args) >= 1 {
 			path = args[0]
 		}
 	}
@@ -152,6 +147,9 @@ func Render(path string) (out string) {
 		Bounds: builder.Bounds(),
 	}
 	builder.Pixels(img.SetPixel)
+	if svg {
+        return img.ToSvg()
+    }
 	out = img.ToMarkdown()
 	out += "\n\n" + renderList(path) + "\n\n"
 	out += "#### " + builder.Description() + "\n\n"

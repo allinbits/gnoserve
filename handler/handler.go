@@ -73,6 +73,11 @@ func (h *WebHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	if strings.HasPrefix(r.URL.Path, "/svg/") {
+		h.RenderSvg(w, r)
+		return
+	}
+
 	if r.Method != http.MethodGet {
 		http.Error(w, "method not allowed", http.StatusMethodNotAllowed)
 		return
@@ -106,6 +111,7 @@ func (h *WebHandler) Get(w http.ResponseWriter, r *http.Request) {
 
 	// Parse the URL
 	gnourl, err := weburl.ParseFromURL(r.URL)
+	fmt.Printf("gnourl: %v\n", gnourl)
 	if err != nil {
 		h.Logger.Warn("unable to parse url path", "path", r.URL.Path, "error", err)
 
