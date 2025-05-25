@@ -18,6 +18,7 @@ func init() {
 	registry.Set("gnome", Gnome{})
 	registry.Set("aib", Aib{})
 	registry.Set("sierpinski", Triangle{})
+	registry.Set("dapp", Dapp{})
 }
 
 func allowPatchesFromSubRealms() {
@@ -112,7 +113,19 @@ func getImageApi(path string) ImageApi {
 }
 
 func Html() string {
-	return Bmp.Html()
+    d, ok := registry.Get("dapp") // ensure dapp is registered
+    if !ok {
+        panic("dapp image not registered")
+    }
+	return d.(Dapp).Html()
+}
+
+func Markdown() string {
+    d, ok := registry.Get("dapp") // ensure dapp is registered
+    if !ok {
+        panic("dapp image not registered")
+    }
+	return d.(Dapp).Markdown()
 }
 
 func Svg(name string) string {
@@ -143,19 +156,27 @@ func Render(path string) (out string) {
 			suffix = args[len(args)-1]
 		}
 	}
-	builder := getImageApi(path)
 	img := &PixelImage{
 		Pixels: make([]ColorPixel, GridWidth*GridWidth),
-		Bounds: builder.Bounds(),
 	}
-	builder.Pixels(img.SetPixel)
 	switch suffix {
 	case "svg":
+        builder := getImageApi(path)
+        img.Bounds = builder.Bounds()
+        builder.Pixels(img.SetPixel)
 		return img.ToSvg()
 	case "html":
-		return Bmp.Html()
+	    if path == "dapp" {
+            return Html()
+        }
 	default:
+	    if path == "dapp" {
+            return Markdown()
+        }
 	}
+    builder := getImageApi(path)
+    img.Bounds = builder.Bounds()
+    builder.Pixels(img.SetPixel)
 	out = img.ToMarkdown()
 	out += "\n\n" + renderList(path) + "\n\n"
 	out += "#### " + builder.Description() + "\n\n"
