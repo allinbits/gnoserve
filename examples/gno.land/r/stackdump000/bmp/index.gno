@@ -143,10 +143,6 @@ func Render(path string) (out string) {
 			suffix = args[len(args)-1]
 		}
 	}
-	if path == "dapp" {
-		out += "\n\n" + Bmp.Markdown() + "\n\n"
-		return out
-	}
 	builder := getImageApi(path)
 	img := &PixelImage{
 		Pixels: make([]ColorPixel, GridWidth*GridWidth),
@@ -156,6 +152,8 @@ func Render(path string) (out string) {
 	switch suffix {
 	case "svg":
 		return img.ToSvg()
+	case "html":
+		return Bmp.Html()
 	default:
 	}
 	out = img.ToMarkdown()

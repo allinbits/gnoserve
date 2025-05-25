@@ -38,6 +38,7 @@ func (h *WebHandler) RenderSvg(w http.ResponseWriter, r *http.Request) {
 	// Use a buffer to render the realm
 	var content bytes.Buffer
 	gnourl, _ := ParseSvgUrl(r)
+	// REVIEW: appcfg.UnsafeHTML is required since w/ are calling RenderRealm
 	_, err := h.Client.RenderRealm(&content, gnourl)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
