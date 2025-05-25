@@ -120,6 +120,14 @@ func Html() string {
 	return d.(Dapp).Html()
 }
 
+func Frame() string {
+    d, ok := registry.Get("dapp") // ensure dapp is registered
+    if !ok {
+        panic("dapp image not registered")
+    }
+	return d.(Dapp).Frame()
+}
+
 func Markdown() string {
     d, ok := registry.Get("dapp") // ensure dapp is registered
     if !ok {
@@ -168,6 +176,10 @@ func Render(path string) (out string) {
 	case "html":
 	    if path == "dapp" {
             return Html()
+        }
+	case "frame":
+	    if path == "dapp" {
+            return Frame()
         }
 	default:
 	    if path == "dapp" {

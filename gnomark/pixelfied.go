@@ -1,22 +1,14 @@
 package gnomark
 
-func PixelfiedDapp(_ string) string {
-	return pixelfiedtemplate
+func PixelfiedIndex(_ string) string {
+	return pixelfiedPage
 }
 
-const pixelfiedtemplate = `
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title>CRT SVG Pixelizer (Gno Output)</title>
-  <style>
-    @import url('/static/dapp/pixelfied/styles.css');
-  </style>
+func PixelfiedFrame(_ string) string {
+	return pixelfiedFrame
+}
 
-</head>
-<body>
-
+const pixelfiedFrame = `
 <h2>SVG Pixelizer (Defs + Gno Export)</h2>
 <input type="file" id="imageLoader" accept="image/*"><br>
 <label>
@@ -35,5 +27,19 @@ const pixelfiedtemplate = `
 
 </body>
 <script src="/static/dapp/pixelfied/dapp.js"></script>
+`
+
+const pixelfiedPage = `
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>CRT SVG Pixelizer (Gno Output)</title>
+  <style>
+    @import url('/static/dapp/pixelfied/styles.css');
+  </style>
+
+</head>
+<body>` + pixelfiedFrame + `
 </html>
 `

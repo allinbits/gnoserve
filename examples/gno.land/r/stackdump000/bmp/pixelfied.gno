@@ -16,23 +16,20 @@ func (Dapp) Markdown() string {
 	"These links are examples of various ways gnoserve can serve the pixelfied dapp.\n\n" +
 	" - [DataUrl SPA](data:text/html;utf8," + url.PathEscape(htmlContent) + ") - 'copy link' & paste in browser to open html in a tab\n\n" +
 	" - [Static Html](/static/dapp/pixelfied/) - html hosted in ./static \n\n" +
-	" - [Pixelfied Frame](./bmp:dapp:html) - use the embedded gno-frame \n\n" +
+	" - [Pixelfied Frame](./bmp:dapp:frame) - use the embedded gno-frame \n\n" +
 	" - [Gnoserve www](/www/r/stackdump000/bmp:dapp:html) - frame served as html by gnoserve\n\n" +
 	dappInfo
 }
 
-// REVIEW: this is a minimal example of a valid gnoMark configuration
-const cfg = `
-{
-    "gnoMark": "pixelfied"
+// Serve only the html fragment - meant to be viewed with the markdown renderer
+func (Dapp) Frame() string {
+	return "```gnomark\n\n" + `{ "gnoMark": "pixelfied" }` + "\n```"
 }
-`
 
-const pixelfiedFrame = "```gnomark" + cfg + "\n```"
-
+// serve the full html page - meant to be viewed via /www/r/ gnoserve route
+// e.g. `/www/r/stackdump000/bmp:dapp:html`
 func (Dapp) Html() string {
-	//return htmlContent
-	return pixelfiedFrame
+	return "```gnomark\n\n" + `{ "gnoMark": "pixelfiedDapp" }` + "\n```"
 }
 
 const dappInfo = `
