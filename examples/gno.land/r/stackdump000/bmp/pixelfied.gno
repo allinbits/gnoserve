@@ -11,19 +11,42 @@ func (Dapp) DataUrl() string {
 }
 
 func (Dapp) Markdown() string {
-	return "## PIXELFIED DAPP\n\n[INSECURE DAPP](" + "data:text/html;utf8," + url.PathEscape(htmlContent) + ")\n\n" + dappInfo
+	return "## PIXELFIED DAPP\n\n" +
+	"### 4 ways to use the pixelfied dapp\n\n" +
+	"These links are examples of various ways gnoserve can serve the pixelfied dapp.\n\n" +
+	" - [DataUrl SPA](data:text/html;utf8," + url.PathEscape(htmlContent) + ") - 'copy link' & paste in browser to open html in a tab\n\n" +
+	" - [Static Html](/static/dapp/pixelfied/) - html hosted in ./static \n\n" +
+	" - [Pixelfied Frame](./bmp:dapp:html) - use the embedded gno-frame \n\n" +
+	" - [Gnoserve www](/www/r/stackdump000/bmp:dapp:html) - frame served as html by gnoserve\n\n" +
+	dappInfo
 }
 
+// REVIEW: this is a minimal example of a valid gnoMark configuration
+const cfg = `
+{
+    "gnoMark": "pixelfied"
+}
+`
+
+const pixelfiedFrame = "```gnomark" + cfg + "\n```"
+
 func (Dapp) Html() string {
-	return htmlContent
+	//return htmlContent
+	return pixelfiedFrame
 }
 
 const dappInfo = `
 ### How to Use the JavaScript Widget for Pixelized Images
 
+Use any of the links above to use the pixelfied dapp.
+
+The most obscure way is to use the "DataUrl SPA" link,
+which opens a JavaScript widget in a new tab.
+
+#### How to Use: Data URL SPA
 The JavaScript widget provided in the htmlContent section of the [dapp.gno](./bmp$source&file=dapp.gno) file allows you to generate pixelized images and export them as Gno-compatible data.
 
-Open the Widget: Right click on "INSECURE DAPP" link above.
+Open the Widget: Right click on "DataUrl SPA" link above.
 
 Use "Copy Link Address" and paste it into a new tab to run the JS widget.
 
@@ -56,6 +79,8 @@ Use "Copy Link Address" and paste it into a new tab to run the JS widget.
   - r, g, and b are the red, green, and blue color values of the pixel.
   These function calls are executed to render the image dynamically. This approach avoids storing raw image data and instead relies on procedural generation.
 `
+
+// REVIEW: this is the UNSECURE DAPP - which users can 'copy-link' and open in a new tab.
 const htmlContent = `
 <!DOCTYPE html>
 <html lang="en">

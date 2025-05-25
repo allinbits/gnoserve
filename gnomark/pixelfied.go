@@ -1,10 +1,17 @@
+package gnomark
+
+func PixelfiedDapp(_ string) string {
+	return pixelfiedtemplate
+}
+
+const pixelfiedtemplate = `
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
   <title>CRT SVG Pixelizer (Gno Output)</title>
   <style>
-    @import url('styles.css');
+    @import url('/static/dapp/pixelfied/styles.css');
   </style>
 
 </head>
@@ -27,5 +34,6 @@
 <textarea id="gnoOutput" placeholder="Gno struct output will appear here..."></textarea>
 
 </body>
-<script src="dapp.js"></script>
+<script src="/static/dapp/pixelfied/dapp.js"></script>
 </html>
+`

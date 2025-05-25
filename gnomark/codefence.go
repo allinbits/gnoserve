@@ -9,11 +9,6 @@ import (
 	"github.com/yuin/goldmark/util"
 )
 
-var templateRegistry = map[string]func(string) string{
-	"frame": gnoFrameRender,
-	"html":  noHtmlMsg,
-}
-
 // gnoMarkRenderer renders the gomark fenced code block as HTML.
 type gnoMarkRenderer struct{}
 
