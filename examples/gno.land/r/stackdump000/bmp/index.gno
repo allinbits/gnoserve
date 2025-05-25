@@ -126,15 +126,21 @@ func Svg(name string) string {
 	return img.ToSvg()
 }
 
+// Render supports viewing with markdown rendering or can return the SVG directly.
+// markdown realm: http://127.0.0.1:8888/r/stackdump000/bmp:profile:svg
+// host as svg: http://127.0.0.1:8888/svg/r/stackdump000/bmp:profile:svg
 func Render(path string) (out string) {
 	args := []string{}
-    svg := strings.HasSuffix(path, ":svg")
+	suffix := ""
 	if path == "" {
 		path = "profile"
 	} else {
 		args = strings.Split(path, ":")
 		if len(args) >= 1 {
 			path = args[0]
+		}
+		if len(args) >= 2 {
+			suffix = args[len(args)-1]
 		}
 	}
 	if path == "dapp" {
@@ -147,9 +153,11 @@ func Render(path string) (out string) {
 		Bounds: builder.Bounds(),
 	}
 	builder.Pixels(img.SetPixel)
-	if svg {
-        return img.ToSvg()
-    }
+	switch suffix {
+	case "svg":
+		return img.ToSvg()
+	default:
+	}
 	out = img.ToMarkdown()
 	out += "\n\n" + renderList(path) + "\n\n"
 	out += "#### " + builder.Description() + "\n\n"

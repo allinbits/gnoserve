@@ -111,7 +111,6 @@ func (h *WebHandler) Get(w http.ResponseWriter, r *http.Request) {
 
 	// Parse the URL
 	gnourl, err := weburl.ParseFromURL(r.URL)
-	fmt.Printf("gnourl: %v\n", gnourl)
 	if err != nil {
 		h.Logger.Warn("unable to parse url path", "path", r.URL.Path, "error", err)
 
