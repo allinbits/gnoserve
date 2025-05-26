@@ -48,6 +48,13 @@ func gnoFrameHtml(key, value string, content string) (out string) {
 	out = strings.ReplaceAll(gnoFrameTemplate, key, value)
 	return strings.ReplaceAll(out, "{CONTENT}", content)
 }
+func init() {
+	// Register the frame template
+	RegisterTemplate("frame", gnoFrameRender)
+
+	// Register the noHtmlMsg template
+	RegisterTemplate("html", noHtmlMsg)
+}
 
 func gnoFrameRender(content string) string {
 	return gnoFrameHtml("{CDN}", gnoFrameWebHost.Cdn(), content)

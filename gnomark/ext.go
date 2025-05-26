@@ -9,11 +9,15 @@ import (
 	"net/http"
 )
 
-var templateRegistry = map[string]func(string) string{
-	"pixelfiedDjpp": PixelfiedIndex,
-	"pixelfied":     PixelfiedFrame,
-	"frame":         gnoFrameRender,
-	"html":          noHtmlMsg,
+// templateRegistry maps GnoMark types to their rendering functions.
+var templateRegistry = map[string]func(string) string{}
+
+// NewGnoMarkExtension adds a new GnoMark code block extension to Goldmark.
+func RegisterTemplate(name string, fn func(string) string) {
+	if _, exists := templateRegistry[name]; exists {
+		panic("template already registered: " + name)
+	}
+	templateRegistry[name] = fn
 }
 
 // GnoMarkExtension is the Goldmark extension adding block parsers and renderers
