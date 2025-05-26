@@ -1,0 +1,31 @@
+package gnomark
+
+func init() {
+	RegisterTemplate("rss", RenderRss)
+}
+
+func RenderRss(_ string) string {
+	return `<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0">
+<channel>
+  <title>GnoMark RSS Feed</title>
+  <link>https://example.com/rss</link>
+  <description>This is an example RSS feed for GnoMark.</description>
+  <item>
+	<title>Example Item</title>
+	<link>https://example.com/item1</link>
+	<description>This is an example item in the GnoMark RSS feed.</description>
+	<pubDate>Mon, 01 Jan 2024 00:00:00 GMT</pubDate>
+	<guid>https://example.com/item1</guid>
+  </item>
+  <item>
+	<title>Another Example Item</title>
+	<link>https://example.com/item2</link>
+	<description>This is another example item in the GnoMark RSS feed.</description>
+	<pubDate>Tue, 02 Jan 2024 00:00:00 GMT</pubDate>
+	<guid>https://example.com/item2</guid>
+  </item>
+</channel>
+</rss>`
+
+}
