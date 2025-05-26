@@ -77,7 +77,9 @@ func renderList(selected string) string {
 
 	keys := make([]string, 0, registry.Size())
 	registry.IterateByOffset(0, registry.Size(), func(key string, value any) bool {
-		keys = append(keys, key)
+		if _, ok := value.(ImageApi); ok {
+			keys = append(keys, key)
+		}
 		return false
 	})
 
@@ -113,26 +115,26 @@ func getImageApi(path string) ImageApi {
 }
 
 func Html() string {
-    d, ok := registry.Get("dapp") // ensure dapp is registered
-    if !ok {
-        panic("dapp image not registered")
-    }
+	d, ok := registry.Get("dapp") // ensure dapp is registered
+	if !ok {
+		panic("dapp image not registered")
+	}
 	return d.(Dapp).Html()
 }
 
 func Frame() string {
-    d, ok := registry.Get("dapp") // ensure dapp is registered
-    if !ok {
-        panic("dapp image not registered")
-    }
+	d, ok := registry.Get("dapp") // ensure dapp is registered
+	if !ok {
+		panic("dapp image not registered")
+	}
 	return d.(Dapp).Frame()
 }
 
 func Markdown() string {
-    d, ok := registry.Get("dapp") // ensure dapp is registered
-    if !ok {
-        panic("dapp image not registered")
-    }
+	d, ok := registry.Get("dapp") // ensure dapp is registered
+	if !ok {
+		panic("dapp image not registered")
+	}
 	return d.(Dapp).Markdown()
 }
 
@@ -169,26 +171,26 @@ func Render(path string) (out string) {
 	}
 	switch suffix {
 	case "svg":
-        builder := getImageApi(path)
-        img.Bounds = builder.Bounds()
-        builder.Pixels(img.SetPixel)
+		builder := getImageApi(path)
+		img.Bounds = builder.Bounds()
+		builder.Pixels(img.SetPixel)
 		return img.ToSvg()
 	case "html":
-	    if path == "dapp" {
-            return Html()
-        }
+		if path == "dapp" {
+			return Html()
+		}
 	case "frame":
-	    if path == "dapp" {
-            return Frame()
-        }
+		if path == "dapp" {
+			return Frame()
+		}
 	default:
-	    if path == "dapp" {
-            return Markdown()
-        }
+		if path == "dapp" {
+			return Markdown()
+		}
 	}
-    builder := getImageApi(path)
-    img.Bounds = builder.Bounds()
-    builder.Pixels(img.SetPixel)
+	builder := getImageApi(path)
+	img.Bounds = builder.Bounds()
+	builder.Pixels(img.SetPixel)
 	out = img.ToMarkdown()
 	out += "\n\n" + renderList(path) + "\n\n"
 	out += "#### " + builder.Description() + "\n\n"

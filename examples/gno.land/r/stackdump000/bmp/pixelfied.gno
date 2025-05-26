@@ -12,13 +12,13 @@ func (Dapp) DataUrl() string {
 
 func (Dapp) Markdown() string {
 	return "## PIXELFIED DAPP\n\n" +
-	"### 4 ways to use the pixelfied dapp\n\n" +
-	"These links are examples of various ways gnoserve can serve the pixelfied dapp.\n\n" +
-	" - [DataUrl SPA](data:text/html;utf8," + url.PathEscape(htmlContent) + ") - 'copy link' & paste in browser to open html in a tab\n\n" +
-	" - [Static Html](/static/dapp/pixelfied/) - html hosted in ./static \n\n" +
-	" - [Pixelfied Frame](./bmp:dapp:frame) - use the embedded gno-frame \n\n" +
-	" - [Gnoserve www](/www/r/stackdump000/bmp:dapp:html) - frame served as html by gnoserve\n\n" +
-	dappInfo
+		"### 4 ways to use the pixelfied dapp\n\n" +
+		"These links are examples of various ways gnoserve can serve the pixelfied dapp.\n\n" +
+		" - [DataUrl SPA](data:text/html;utf8," + url.PathEscape(htmlContent) + ") - 'copy link' & paste in browser to open html in a tab\n\n" +
+		" - [Static Html](/static/dapp/pixelfied/) - html hosted in ./static \n\n" +
+		" - [Pixelfied Frame](./bmp:dapp:frame) - use the embedded gno-frame \n\n" +
+		" - [Gnoserve www](/www/r/stackdump000/bmp:dapp:html) - frame served as html by gnoserve\n\n" +
+		dappInfo
 }
 
 // Serve only the html fragment - meant to be viewed with the markdown renderer

@@ -43,10 +43,10 @@ func (r *gnoMarkRenderer) renderGnoMarkBlock(w util.BufWriter, source []byte, no
 	return ast.WalkContinue, err
 }
 
-// gnoMarkExtension is the Goldmark extension for gomark fenced code blocks.
-type gnoMarkExtension struct{}
+// CodefenceExt is the Goldmark extension for gomark fenced code blocks.
+type CodefenceExt struct{}
 
-func (e *gnoMarkExtension) Extend(m goldmark.Markdown) {
+func (e *CodefenceExt) Extend(m goldmark.Markdown) {
 	m.Parser().AddOptions(parser.WithBlockParsers(
 		util.Prioritized(parser.NewFencedCodeBlockParser(), 100),
 	))
@@ -56,8 +56,8 @@ func (e *gnoMarkExtension) Extend(m goldmark.Markdown) {
 }
 
 // NewGnoMarkExtension creates a new gomark extension.
-func NewGnoMarkExtension() *gnoMarkExtension {
-	return &gnoMarkExtension{}
+func NewGnoMarkExtension() *CodefenceExt {
+	return &CodefenceExt{}
 }
 
 func isValidJson(data []byte) bool {

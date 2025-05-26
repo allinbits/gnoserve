@@ -10,14 +10,14 @@ import (
 )
 
 var templateRegistry = map[string]func(string) string{
-	"pixelfiedDapp": PixelfiedIndex,
+	"pixelfiedDjpp": PixelfiedIndex,
 	"pixelfied":     PixelfiedFrame,
 	"frame":         gnoFrameRender,
 	"html":          noHtmlMsg,
 }
 
 // GnoMarkExtension is the Goldmark extension adding block parsers and renderers
-// for GnoMark blocks: <gno-mark>...</gno-mark>
+// for GnoMark blocks: ```gnomark {json} ```
 type GnoMarkExtension struct {
 	Client *gnoweb.HTMLWebClient
 }
