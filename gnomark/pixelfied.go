@@ -1,11 +1,11 @@
 package gnomark
 
 func init() {
-	// Register the Pixelfied template
+	// render full html page
 	RegisterTemplate("pixelfiedDapp", PixelfiedIndex)
 
-	// Register the Pixelfied frame
-	RegisterTemplate("pixelfiedFrame", PixelfiedFrame)
+	// renders htmlFragment
+	RegisterTemplate("pixelfied", PixelfiedFrame)
 }
 
 func PixelfiedIndex(_ string) string {
