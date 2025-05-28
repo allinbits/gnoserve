@@ -8,11 +8,11 @@ import (
 )
 
 var rss = &feed.Feed{
-	Title:       "Stack Dump",
-	Link:        &feed.Link{Href: "https://gno.land/r/stackdump000"},
-	Description: "A collection of stack dumps from Gno.land.",
-	Author:      &feed.Author{Name: "Gno.land", Email: ""},
-	Created:     time.Now(),
+	Title:       "GnoCap: bitmaps on Gno.land",
+	Link:        &feed.Link{Href: "https://gnoserve.fly.dev/rss/r/stackdump000/feed"},
+	Description: "A collection of bitmaps stored on Gno.land.",
+	Author:      &feed.Author{Name: "stackdump", Email: "myork@stackdump.com"},
+	Created:    "2025-05-27T00:00:00Z",
 }
 
 func frame(format string, data string) string {
