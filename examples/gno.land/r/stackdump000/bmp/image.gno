@@ -9,10 +9,6 @@ import (
 
 const GridWidth = 51
 
-// FIXME: getting this error rendering gnocap
-// review grid calculations
-// "node response error: slice index out of bounds: 2609
-
 type Bounds struct {
 	X1 int
 	Y1 int
@@ -152,7 +148,6 @@ const footer = `
 }
 `
 
-// FIXME update to include bounds
 func (image *PixelImage) Source(name string) string {
 
 	objectName := strings.Title(name)

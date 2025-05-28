@@ -66,8 +66,11 @@ func NewWebHandler(logger *slog.Logger, cfg WebHandlerConfig) (*WebHandler, erro
 func (h *WebHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	h.Logger.Debug("receiving request", "method", r.Method, "path", r.URL.Path)
 
-	// TODO: only enable this for dev mode
-	// for on-chain use a CDN (https://www.jsdelivr.com/ is free for open source)
+	if r.Method != http.MethodGet {
+		http.Error(w, "method not allowed", http.StatusMethodNotAllowed)
+		return
+	}
+
 	if strings.HasPrefix(r.URL.Path, "/static/") {
 		h.RenderStaticFile(w, r)
 		return
@@ -82,8 +85,9 @@ func (h *WebHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 		h.RenderHtml(w, r)
 		return
 	}
-	if r.Method != http.MethodGet {
-		http.Error(w, "method not allowed", http.StatusMethodNotAllowed)
+
+	if strings.HasPrefix(r.URL.Path, "/rss/") {
+		h.RenderRss(w, r)
 		return
 	}
 

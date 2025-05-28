@@ -3,44 +3,7 @@ package bmp
 import (
 	"std"
 	"strings"
-
-	"gno.land/p/demo/avl"
 )
-
-var (
-	registry         = avl.NewTree()
-	realmAllowPrefix = []string{}
-)
-
-func init() {
-	allowPatchesFromSubRealms()
-	registry.Set("profile", Profile{})
-	registry.Set("gnome", Gnome{})
-	registry.Set("aib", Aib{})
-	registry.Set("sierpinski", Triangle{})
-	registry.Set("dapp", Dapp{})
-}
-
-func allowPatchesFromSubRealms() {
-	realmAllowPrefix = append(realmAllowPrefix, std.CurrentRealm().PkgPath()+"/") // must be in realm sub-path
-}
-
-func hasAllowedPrefix() bool {
-	prevRealm := std.PreviousRealm()
-	for _, callerPath := range realmAllowPrefix {
-		if strings.HasPrefix(prevRealm.PkgPath(), callerPath) {
-			return true
-		}
-	}
-	return false
-}
-
-func assertAccess() {
-	if !hasAllowedPrefix() {
-		panic("access denied: " + std.PreviousRealm().PkgPath() +
-			" realm must match an allowed prefix:[" + strings.Join(realmAllowPrefix, ",") + "]")
-	}
-}
 
 // assertValidName controls the name of the image by the caller path
 // ex1: /r/stackdump/bmp/v0.0.1_profile is allowed to set "profile" image
@@ -49,25 +12,6 @@ func assertValidName(name string) {
 	if !strings.HasSuffix(std.PreviousRealm().PkgPath(), name) {
 		panic("invalid name: " + name + " must end with " + std.PreviousRealm().PkgPath())
 	}
-}
-
-type PixelSetter = func(x, y, r, g, b int)
-
-type ImageApi interface {
-	Pixels(p PixelSetter)
-	Bounds() Bounds
-	Description() string
-}
-
-func Register(name string, imgHandler ImageApi) {
-	assertAccess()
-	assertValidName(name)
-	if _, exists := registry.Get(name); !exists {
-		std.Emit("image_registered", "name", name)
-	} else {
-		std.Emit("image_updated", "name", name)
-	}
-	registry.Set(name, imgHandler)
 }
 
 func renderList(selected string) string {
@@ -130,6 +74,15 @@ func Frame() string {
 	return d.(Dapp).Frame()
 }
 
+// Render image w/ a link to the SVG image rather than rendering it inline.
+func Link(path string) string {
+	if path == "" {
+		path = "profile"
+	}
+	link := "/svg/r/stackdump000/bmp:" + path + ":svg"
+	return "[![" + link + "](" + link + ")](" + link + ")"
+}
+
 func Markdown() string {
 	d, ok := registry.Get("dapp") // ensure dapp is registered
 	if !ok {
@@ -170,6 +123,8 @@ func Render(path string) (out string) {
 		Pixels: make([]ColorPixel, GridWidth*GridWidth),
 	}
 	switch suffix {
+	case "img":
+		return Link(path)
 	case "svg":
 		builder := getImageApi(path)
 		img.Bounds = builder.Bounds()
@@ -191,10 +146,11 @@ func Render(path string) (out string) {
 	builder := getImageApi(path)
 	img.Bounds = builder.Bounds()
 	builder.Pixels(img.SetPixel)
-	out = img.ToMarkdown()
+	out = "[" + img.ToMarkdown() + path + ".svg](/svg/r/stackdump000/bmp:" + path + ":svg)\n\n"
 	out += "\n\n" + renderList(path) + "\n\n"
 	out += "#### " + builder.Description() + "\n\n"
 	out += "\n\n[PIXELFIED DAPP](./bmp:dapp)\n\n"
+	out += "\n\n[RSS FEED](./feed)\n\n"
 
 	if len(args) == 2 {
 		if args[1] == "source" {
