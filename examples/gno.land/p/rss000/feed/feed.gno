@@ -1,10 +1,9 @@
 package feed
 
 import (
-"time"
-"strings"
+	"strings"
+	"time"
 )
-
 
 // Feed represents the main feed structure.
 type Feed struct {
@@ -12,7 +11,7 @@ type Feed struct {
 	Link        *Link
 	Description string
 	Author      *Author
-	Created     time.Time
+	PubDate     time.Time
 }
 
 // Link represents a hyperlink with an Href attribute.
@@ -31,41 +30,35 @@ type Item struct {
 	Title       string
 	Link        *Link
 	Description string
-	Author      *Author
-	Created     time.Time
+	Content     string // Optional content for the item
+	PubDate     time.Time
 }
 
 func (item *Item) ToJson() string {
-    return `{
-        "title": "` + item.Title + `",
-        "link": "` + item.Link.Href + `",
-        "description": "` + item.Description + `",
-        "author": {
-            "name": "` + item.Author.Name + `",
-            "email": "` + item.Author.Email + `"
-        },
-        "created": "` + item.Created.Format(time.RFC3339) + `"
-    }`
+	return `{
+    "title": "` + item.Title + `",
+    "link": "` + item.Link.Href + `",
+    "description": "` + item.Description + `",
+    "content": "` + item.Description + `",
+    "guid": "` + item.Link.Href + `",
+    "pubData": "` + item.PubDate.Format(time.RFC3339) + `"
+}`
 }
 
 func itemsToJson(items []*Item) string {
-    var jsonItems []string
-    for _, item := range items {
-        jsonItems = append(jsonItems, item.ToJson())
-    }
-    return strings.Join(jsonItems, ", ")
+	var jsonItems []string
+	for _, item := range items {
+		jsonItems = append(jsonItems, item.ToJson())
+	}
+	return strings.Join(jsonItems, ", ")
 }
 
-func (f *Feed) ToJson(item []*Item) string {
-    return `{
+func (f *Feed) ToJson(items []*Item) string {
+	return `{
         "title": "` + f.Title + `",
         "link": "` + f.Link.Href + `",
         "description": "` + f.Description + `",
-        "author": {
-            "name": "` + f.Author.Name + `",
-            "email": "` + f.Author.Email + `"
-        },
-        "created": "` + f.Created.Format(time.RFC3339) + `",
-        "items": [` + itemsToJson(item) + `]
+        "created": "` + f.PubDate.Format(time.RFC3339) + `",
+        "items": [` + itemsToJson(items) + `]
     }`
 }

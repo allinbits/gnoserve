@@ -12,7 +12,7 @@ var rss = &feed.Feed{
 	Link:        &feed.Link{Href: "https://gnoserve.fly.dev/rss/r/stackdump000/feed"},
 	Description: "A collection of bitmaps stored on Gno.land.",
 	Author:      &feed.Author{Name: "stackdump", Email: "myork@stackdump.com"},
-	Created:    "2025-05-27T00:00:00Z",
+	PubDate:     time.Now(),
 }
 
 func frame(format string, data string) string {
@@ -22,16 +22,21 @@ func frame(format string, data string) string {
 }
 
 func getItems() (items []*feed.Item) {
-    bmp.IterateRegistry(func(key string, value interface{}) bool {
-        if item, ok := value.(*feed.Item); ok {
-            items = append(items, item)
-        }
-        return true
-    }, func(value interface{}) bool {
-        _, ok := value.(*feed.Item)
-        return ok
-    })
-    return items
+	bmp.IterateRegistry(func(key string, value interface{}) bool {
+		if item, ok := value.(bmp.ImageApi); ok {
+			items = append(items, &feed.Item{
+				Title:       key,
+				Link:        &feed.Link{Href: "https://gnoserve.fly.dev/r/stackdump000/bmp:" + key},
+				Description: item.Description(),
+				Content:     item.Description(), // Optional content, can be empty
+				PubDate:     time.Now(),
+			})
+		} else {
+			panic("registry value is not an Item: " + key)
+		}
+		return false // continue iterating
+	}, bmp.HasImageApi)
+	return items
 }
 
 func Render(path string) string {

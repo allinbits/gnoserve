@@ -5,7 +5,6 @@ import (
 	"strings"
 )
 
-
 // assertValidName controls the name of the image by the caller path
 // ex1: /r/stackdump/bmp/v0.0.1_profile is allowed to set "profile" image
 // ex2: /r/stackdump/bmp/v0.0.1/subfolder/profile is allowed to set "profile" image
@@ -77,11 +76,11 @@ func Frame() string {
 
 // Render image w/ a link to the SVG image rather than rendering it inline.
 func Link(path string) string {
-    if path == "" {
-        path = "profile"
-    }
-    link := "/svg/r/stackdump000/bmp:" + path + ":svg"
-    return "[!["+ link + "]("+ link + ")](" + link + ")"
+	if path == "" {
+		path = "profile"
+	}
+	link := "/svg/r/stackdump000/bmp:" + path + ":svg"
+	return "[![" + link + "](" + link + ")](" + link + ")"
 }
 
 func Markdown() string {
@@ -125,7 +124,7 @@ func Render(path string) (out string) {
 	}
 	switch suffix {
 	case "img":
-	    return Link(path)
+		return Link(path)
 	case "svg":
 		builder := getImageApi(path)
 		img.Bounds = builder.Bounds()
@@ -151,6 +150,7 @@ func Render(path string) (out string) {
 	out += "\n\n" + renderList(path) + "\n\n"
 	out += "#### " + builder.Description() + "\n\n"
 	out += "\n\n[PIXELFIED DAPP](./bmp:dapp)\n\n"
+	out += "\n\n[RSS FEED](./feed)\n\n"
 
 	if len(args) == 2 {
 		if args[1] == "source" {

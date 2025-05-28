@@ -1,5 +1,7 @@
 package gnomark
 
+import "encoding/json"
+
 func init() {
 	RegisterTemplate("rss", RenderRss)
 }
@@ -20,19 +22,23 @@ func RenderRss(content string) string {
 }
 
 type RssItem struct {
-	Title       string
-	Link        string
-	Description string
-	PubDate     string
-	Guid        string
+	Title       string `json:"title"`
+	Link        string `json:"link"`
+	Description string `json:"description"`
+	Content     string `json:"content:encoded"`
+	Guid        string `json:"guid"`
+	PubDate     string `json:"pubDate"`
 }
 
 func (i RssItem) Render(format string) string {
+	// FIXME: formatting is not consistent - make sure data is RFC 822 compliant
+	// e.g., Wed, 28 May 2025 22:03:41 GMT
 	if format == "rss" {
 		return `<item>
 	<title>` + i.Title + `</title>
 	<link>` + i.Link + `</link>
 	<description>` + i.Description + `</description>
+	<content:encoded>` + i.Content + `</content:encoded>
 	<pubDate>` + i.PubDate + `</pubDate>
 	<guid>` + i.Guid + `</guid>
 	</item>`
@@ -41,16 +47,43 @@ func (i RssItem) Render(format string) string {
 }
 
 func getItems(content string) []RssItem {
-
-	return []RssItem{
-		{
-			Title:       "Example Item",
-			Link:        "https://example.com/item1",
-			Description: "This is an example item in the GnoMark RSS feed.",
-			PubDate:     "Mon, 01 Jan 2024 00:00:00 GMT",
-			Guid:        "https://example.com/item1",
-		},
+	var feed struct {
+		GnoMark string `json:"gnoMark"`
+		Format  string `json:"format"`
+		Feed    struct {
+			Title       string `json:"title"`
+			Link        string `json:"link"`
+			Description string `json:"description"`
+			Created     string `json:"created"`
+			Items       []struct {
+				Title       string `json:"title"`
+				Link        string `json:"link"`
+				Description string `json:"description"`
+				Content     string `json:"content"`
+				Guid        string `json:"guid"`
+				PubDate     string `json:"pubData"`
+			} `json:"items"`
+		} `json:"feed"`
 	}
+
+	err := json.Unmarshal([]byte(content), &feed)
+	if err != nil {
+		panic("Failed to parse content: " + err.Error())
+	}
+
+	var rssItems []RssItem
+	for _, item := range feed.Feed.Items {
+		rssItems = append(rssItems, RssItem{
+			Title:       item.Title,
+			Link:        item.Link,
+			Description: item.Description,
+			Content:     item.Content,
+			Guid:        item.Guid,
+			PubDate:     item.PubDate,
+		})
+	}
+
+	return rssItems
 }
 
 func getItemsXml(content string) string {
@@ -65,7 +98,7 @@ func getItemsXml(content string) string {
 func renderXmlRss(content string) string {
 
 	return `<?xml version="1.0" encoding="UTF-8"?>
-<rss version="2.0">
+<rss version="2.0" xmlns:content="http://purl.org/rss/1.0/modules/content/">
 <channel>
   <title>GnoMark RSS Feed</title>
   <link>https://example.com/rss</link>
