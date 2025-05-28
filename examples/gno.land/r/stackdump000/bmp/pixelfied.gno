@@ -68,7 +68,10 @@ Use "Copy Link Address" and paste it into a new tab to run the JS widget.
 #### **Important Notes**
 
 - **HTML Restrictions on Gno.land**:
-  Gno.land forbids the use of raw HTML in realms. To work around this, the widget is embedded as a data: URL, which allows the HTML content to be safely included without violating platform restrictions.
+  Gno.land forbids the use of raw HTML in realms. To work around this (in vanilla gnoweb), the widget is embedded as a data: URL, which allows the HTML content to be safely included without violating platform restrictions.
+
+- **Gnoserve**: using gnoserve, the widget can be served as a static HTML file or embedded in a gnoMark frame.
+  - See [Pixelfied Frame](#4-ways-to-use-the-pixelfied-dapp).
 
 - **How Pixelized Images Are Stored**:
   In Gno, pixelized images are stored as function callbacks. Each pixel is represented by a function call like p(x, y, r, g, b), where:
