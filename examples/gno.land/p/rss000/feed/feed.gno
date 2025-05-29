@@ -39,7 +39,7 @@ func (item *Item) ToJson() string {
     "title": "` + item.Title + `",
     "link": "` + item.Link.Href + `",
     "description": "` + item.Description + `",
-    "content": "` + item.Description + `",
+    "content": "` + item.Content + `",
     "guid": "` + item.Link.Href + `",
     "pubData": "` + item.PubDate.Format(time.RFC3339) + `"
 }`

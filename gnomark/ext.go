@@ -6,7 +6,6 @@ import (
 	"github.com/yuin/goldmark"
 	"github.com/yuin/goldmark/parser"
 	"go.abhg.dev/goldmark/mermaid"
-	"net/http"
 )
 
 // templateRegistry maps GnoMark types to their rendering functions.
@@ -38,8 +37,9 @@ func (e *GnoMarkExtension) Extend(m goldmark.Markdown) {
 	}).Extend(m) // mermaid
 
 	// image embedding
-	img64.Img64.Extend(m)
-	m.Renderer().AddOptions(img64.WithFileReader(img64.AllowRemoteFileReader(http.DefaultClient)))
+	_ = img64.Img64
+	//img64.Img64.Extend(m)
+	//m.Renderer().AddOptions(img64.WithFileReader(img64.AllowRemoteFileReader(http.DefaultClient)))
 
 	// Setup Gnomark
 	NewGnoMarkExtension().Extend(m)
