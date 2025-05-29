@@ -16,10 +16,12 @@ var rss = &feed.Feed{
 }
 
 func frame(format string, data string) string {
+	//return "```\n\n" + // NOTE: use un-named codefence to debug
 	return "```gnomark\n\n" +
 		`{ "gnoMark": "rss", "format": "` + format + `", "feed": ` + data + `}` +
 		"\n```"
 }
+
 
 func getItems() (items []*feed.Item) {
 	bmp.IterateRegistry(func(key string, value interface{}) bool {
@@ -28,7 +30,7 @@ func getItems() (items []*feed.Item) {
 				Title:       key,
 				Link:        &feed.Link{Href: "https://gnoserve.fly.dev/r/stackdump000/bmp:" + key},
 				Description: item.Description(),
-				Content:     item.Description(), // Optional content, can be empty
+				Content:     "", // TODO: raw image tags are still 'upgraded' as cache
 				PubDate:     time.Now(),
 			})
 		} else {
