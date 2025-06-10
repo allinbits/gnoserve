@@ -6,19 +6,19 @@ Gnoserve - prototyping gno-frame design
 
 BACKLOG
 -------
-
-- [ ] 'reddit place' demo - try 250*250 bmp grid - png rendering collaborative drawing app
-    - [ ] use gno js client to test rendering larger SVGs
+- [ ] extend gno-cap to be usable
+  - [ ] use gno js client to test rendering larger SVGs
+  - [ ] add API for users to change pixel colors
 
 - [ ] test/fix json+ld codefence support - does it work properly?
-
 - [ ] remove all hardcoded configs in this repo - like starting realm path - support a config file or env var
 
-- [ ] implement RSS feed using r/gnoserve posts as a feed
  
   DONE
 ----
 - [x] (try to use jsonld) Build image/object index on chain - add widget to reference on-chain data
+- [x] 'reddit place' demo - try 250*250 bmp grid - png rendering collaborative drawing app
+- [x] implement RSS feed using r/gnoserve posts as a feed
 
 ICEBOX
 ------
