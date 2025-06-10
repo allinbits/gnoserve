@@ -22,7 +22,6 @@ func frame(format string, data string) string {
 		"\n```"
 }
 
-
 func getItems() (items []*feed.Item) {
 	bmp.IterateRegistry(func(key string, value interface{}) bool {
 		if item, ok := value.(bmp.ImageApi); ok {
@@ -54,6 +53,5 @@ func Render(path string) string {
 	default:
 		panic("unknown path")
 	}
-	items := getItems()
-	return frame(path, rss.ToJson(items))
+	return frame(path, rss.ToJson(getItems()))
 }

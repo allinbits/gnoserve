@@ -41,7 +41,7 @@ func (item *Item) ToJson() string {
     "description": "` + item.Description + `",
     "content": "` + item.Content + `",
     "guid": "` + item.Link.Href + `",
-    "pubData": "` + item.PubDate.Format(time.RFC3339) + `"
+    "pubData": "` + item.PubDate.Format(time.RFC1123) + `"
 }`
 }
 
