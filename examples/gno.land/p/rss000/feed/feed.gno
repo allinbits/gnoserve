@@ -34,6 +34,10 @@ type Item struct {
 	PubDate     time.Time
 }
 
+func RssTime(t time.Time) string {
+    return t.Format("02 Jan 2006 15:04 -0700")
+}
+
 func (item *Item) ToJson() string {
 	return `{
     "title": "` + item.Title + `",
@@ -41,7 +45,7 @@ func (item *Item) ToJson() string {
     "description": "` + item.Description + `",
     "content": "` + item.Content + `",
     "guid": "` + item.Link.Href + `",
-    "pubData": "` + item.PubDate.Format(time.RFC1123) + `"
+    "pubData": "` + RssTime(item.PubDate) + `"
 }`
 }
 
@@ -58,7 +62,7 @@ func (f *Feed) ToJson(items []*Item) string {
         "title": "` + f.Title + `",
         "link": "` + f.Link.Href + `",
         "description": "` + f.Description + `",
-        "created": "` + f.PubDate.Format(time.RFC3339) + `",
+        "created": "` + RssTime(f.PubDate) + `",
         "items": [` + itemsToJson(items) + `]
     }`
 }

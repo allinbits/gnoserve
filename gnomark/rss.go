@@ -36,15 +36,16 @@ type RssItem struct {
 func urlToAtomicLink(url string) string {
 	linkType := "text/html"
 	linkRel := "alternate"
-	if strings.HasSuffix("feed", url) {
+
+	if strings.HasSuffix(url, "feed") {
 		linkType = "application/rss+xml"
 		linkRel = "self"
 	}
-	if strings.HasSuffix("svg", url) {
+	if strings.HasSuffix(url, "svg") {
 		linkType = "image/svg+xml"
 		linkRel = "alternate"
 	}
-	if strings.HasSuffix("json", url) {
+	if strings.HasSuffix(url, "json") {
 		linkType = "application/json"
 		linkRel = "alternate"
 	}
@@ -116,12 +117,15 @@ func getItemsXml(content string) string {
 }
 
 func renderXmlRss(content string) string {
+	// TODO: should we rely on the content to determine the feed URL? remove hardcoded URL
+	feedUrl := "https://gnoserve.fly.dev/rss/r/stackdump000/feed"
 
 	return `<?xml version="1.0" encoding="UTF-8"?>
 <rss version="2.0" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:atom="http://www.w3.org/2005/Atom">
 <channel>
   <title>GnoMark RSS Feed</title>
-  <link>https://example.com/rss</link>
+  <link>` + feedUrl + `</link>
+` + urlToAtomicLink("https://gnoserve.fly.dev/rss/r/stackdump000/feed") + `
   <description>This is an example RSS feed for GnoMark.</description>
 ` + getItemsXml(content) + `
 </channel>
