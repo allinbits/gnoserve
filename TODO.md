@@ -22,6 +22,7 @@ BACKLOG
 
 ICEBOX
 ------
+- [ ] consider extracting 'gnomark' into a separate repo 
 - [ ] build a template mechanism that depends on functions deployed to gno.land
    - try out gno functions (call out to realm to render template) - as MD extensions
 - [ ] Consider Refactor could we depend on gnoweb and/or gnodev in a better way?

@@ -1,6 +1,9 @@
 package gnomark
 
-import "encoding/json"
+import (
+	"encoding/json"
+	"strings"
+)
 
 func init() {
 	RegisterTemplate("rss", RenderRss)
@@ -30,13 +33,30 @@ type RssItem struct {
 	PubDate     string `json:"pubDate"`
 }
 
+func urlToAtomicLink(url string) string {
+	linkType := "text/html"
+	linkRel := "alternate"
+	if strings.HasSuffix("feed", url) {
+		linkType = "application/rss+xml"
+		linkRel = "self"
+	}
+	if strings.HasSuffix("svg", url) {
+		linkType = "image/svg+xml"
+		linkRel = "alternate"
+	}
+	if strings.HasSuffix("json", url) {
+		linkType = "application/json"
+		linkRel = "alternate"
+	}
+	return `<atom:link href="` + url + `" rel="` + linkRel + `" type="` + linkType + `"/>`
+
+}
+
 func (i RssItem) Render(format string) string {
-	// FIXME: formatting is not consistent - make sure data is RFC 822 compliant
-	// e.g., Wed, 28 May 2025 22:03:41 GMT
 	if format == "rss" {
 		return `<item>
 	<title>` + i.Title + `</title>
-	<link>` + i.Link + `</link>
+	` + urlToAtomicLink(i.Link) + `
 	<description>` + i.Description + `</description>
 	<content:encoded>` + i.Content + `</content:encoded>
 	<pubDate>` + i.PubDate + `</pubDate>

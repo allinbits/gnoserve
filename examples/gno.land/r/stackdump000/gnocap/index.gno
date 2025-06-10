@@ -1,14 +1,13 @@
 package gnocap
 
 import (
-    "strings"
+	"strings"
 )
 
 var width = 750
 var height = 750
 
 var gridSize = 250
-
 
 var description = "grid size 250x250"
 
@@ -20,7 +19,7 @@ var JsonLd = `{
     "url": "https://gnoserve.fly.dev/r/stackdump000/gnocap"
 }`
 
-var jsonLd = "\n\n```jsonld\n\n"+ JsonLd + "\n\n```"
+var jsonLd = "\n\n```jsonld\n\n" + JsonLd + "\n\n```"
 
 var intro = `# GnoCap:  ` + description
 
@@ -35,10 +34,9 @@ var body = `
 var controls = `
 `
 
-
 func getFormat(input string) string {
-    if strings.HasSuffix(input, ":svg") {
-        return "svg"
-    }
-    return "md"
+	if strings.HasSuffix(input, ":svg") {
+		return "svg"
+	}
+	return "md"
 }
