@@ -13,7 +13,6 @@ var (
 
 	gx    = 25 // grid size to populate
 	gy    = 25
-	level = 128
 	mult  = 2
 )
 
@@ -46,8 +45,8 @@ func init() {
 					Bounds: Bounds{ // REVIEW: scale to grid size
 						X1: 0,
 						Y1: 0,
-						X2: 250, // KLUDGE: each grid will max at 50
-						Y2: 250,
+						X2: 50,
+						Y2: 50,
 					},
 				}
 			}
@@ -105,7 +104,7 @@ func getPath(input string) string {
 // Build out entire grid
 func SvgGrid() string {
 	var sb strings.Builder
-	sb.WriteString(`<svg width=100% height=100% viewBox="0 0 250 250" xmlns="http://www.w3.org/2000/svg">`)
+	sb.WriteString(`<svg width="100%" height="100%" viewBox="0 0 250 250" xmlns="http://www.w3.org/2000/svg">`)
 	for c, col := range cols {
 		for r, row := range rows {
 			for _, q := range quad {

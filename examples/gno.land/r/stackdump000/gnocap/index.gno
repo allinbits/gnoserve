@@ -26,7 +26,7 @@ var intro = `# GnoCap:  ` + description
 var body = `
 ## single grid 25*25 segment
 - [A0z](./gnocap:A0z): zoom in on a single 25x25 segment
-- [A0z:svg](./gnocap:svg): View all segments at once
+- [gnocap:svg](./gnocap:svg): View all 100 tiles at once
 
 ![el](/svg/r/stackdump000/gnocap:A0z:svg)
 `

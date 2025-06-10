@@ -10,8 +10,16 @@ func init() {
 }
 
 func getRssFormat(content string) string {
-	_ = content // Use content if needed for processing
-	return "rss"
+	// { "gnoMark": "rss", "format": "xml",
+	// get format from json content
+	var feed struct {
+		Format string `json:"format"`
+	}
+	err := json.Unmarshal([]byte(content), &feed)
+	if err != nil {
+		return "md"
+	}
+	return feed.Format
 }
 
 func RenderRss(content string) string {
@@ -19,9 +27,13 @@ func RenderRss(content string) string {
 	switch format {
 	case "rss":
 		return renderXmlRss(content)
+	case "xml":
+		return renderXmlRss(content)
+	case "md":
+		return renderMarkdownFrame(content)
 	default:
-		return "<p>Unsupported format: " + format + "</p>"
 	}
+	return "<p>Unsupported format: " + format + "</p>"
 }
 
 type RssItem struct {
@@ -130,5 +142,10 @@ func renderXmlRss(content string) string {
 ` + getItemsXml(content) + `
 </channel>
 </rss>`
+}
 
+func renderMarkdownFrame(content string) string {
+	// TODO: extend with /static/gnomark/rss-feed.js custom element
+	return "<p> NOTE: feed is hosted as xml here: <a href=\"/rss/r/stackdump000/feed:xml\">/rss/r/stackdump000/feed:xml</a></p>" +
+		`<rss-feed>` + content + `</rss-feed><script src="/static/gnomark/rss/rss-feed.js"></script>`
 }
