@@ -6,13 +6,12 @@ Gnoserve - prototyping gno-frame design
 
 BACKLOG
 -------
-- [ ] extend gno-cap to be usable
+- [ ] extend gno-cap to be usable (via purpose-built web UX)
   - [ ] use gno js client to test rendering larger SVGs
   - [ ] add API for users to change pixel colors
 
-- [ ] test/fix json+ld codefence support - does it work properly?
-- [ ] remove all hardcoded configs in this repo - like starting realm path - support a config file or env var
-
+- [ ] build a template mechanism that depends on functions deployed to gno.land
+  -  using same urls from labs /realms/gno-land/r/foo/bar
  
   DONE
 ----
@@ -22,8 +21,13 @@ BACKLOG
 
 ICEBOX
 ------
+- [ ] test/fix json+ld codefence support - does it work properly?
+- [ ] remove all hardcoded configs in this repo - like starting realm path - support a config file or env var
+
+- [ ] advertise data feeds using .well-known/
+  - https://schema.org/docs/feeds.html#discovery
 - [ ] consider extracting 'gnomark' into a separate repo 
-- [ ] build a template mechanism that depends on functions deployed to gno.land
+- 
    - try out gno functions (call out to realm to render template) - as MD extensions
 - [ ] Consider Refactor could we depend on gnoweb and/or gnodev in a better way?
 - [ ] support realm index/search
