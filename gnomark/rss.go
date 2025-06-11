@@ -7,6 +7,7 @@ import (
 
 func init() {
 	RegisterTemplate("rss", RenderRss)
+	RegisterTemplate("rss-feed", RenderRss) // NOTE: updated to match usage in frame registry
 }
 
 func getRssFormat(content string) string {
@@ -147,5 +148,6 @@ func renderXmlRss(content string) string {
 func renderMarkdownFrame(content string) string {
 	// TODO: extend with /static/gnomark/rss-feed.js custom element
 	return "<p> NOTE: feed is hosted as xml here: <a href=\"/rss/r/stackdump000/feed:xml\">/rss/r/stackdump000/feed:xml</a></p>" +
+		"<p> ALSO: example using frames registry  <a href=\"/rss/r/stackdump000/gnoframe:xml\">/rss/r/stackdump000/gnoframe:xml</a></p>" +
 		`<rss-feed>` + content + `</rss-feed><script src="/static/gnomark/rss/rss-feed.js"></script>`
 }

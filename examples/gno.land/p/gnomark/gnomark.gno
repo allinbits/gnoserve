@@ -22,6 +22,7 @@ func (wh *WebHost) Frame(element, source string) string {
 type Record struct {
 	TagName      string
 	WebHost      WebHost
+	Description  string
 	RegisteredBy std.Realm
 	RegisteredAt time.Time
 	UpdatedAt    time.Time

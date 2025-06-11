@@ -26,7 +26,7 @@ func init() {
 	realmAllowPrefix = append(realmAllowPrefix, std.CurrentRealm().PkgPath()+"/") // must be in realm sub-path
 	reservedPrefixes = append(reservedPrefixes, "gno", "gnoland", "gnomark")
 
-	register("rss-feed", webHost)
+	register("rss-feed", webHost, "renders an rss widget") // REVIEW: maybe try a more useful example
 }
 
 func hasAllowedPrefix() bool {
@@ -46,9 +46,10 @@ func assertAccess() {
 	}
 }
 
-func Register(elementTag string) {
+// REVIEW: let user update or change webhost
+func Register(elementTag string, description string) {
 	assertAccess()
-	register(elementTag, webHost)
+	register(elementTag, webHost, description)
 }
 
 func ReservePrefix(prefix string) {
@@ -87,7 +88,7 @@ func IsFrameType(frame interface{}) bool {
 	return ok
 }
 
-func register(elementTag string, webHost gnomark.WebHost) {
+func register(elementTag string, webHost gnomark.WebHost, description string) {
 	if !IsValidTagName(elementTag) {
 		panic("invalid tag name: " + elementTag)
 	}
@@ -115,6 +116,7 @@ func RenderTag(element, path string, obj interface{}) string {
     return sb.String()
 }
 
+// TODO: return web hosts and tags as json or md
 func Render(path string) string {
 	var sb strings.Builder
 
