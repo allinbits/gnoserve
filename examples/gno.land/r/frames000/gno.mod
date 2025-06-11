@@ -1,0 +1,1 @@
+module gno.land/r/frames000/gno.mod

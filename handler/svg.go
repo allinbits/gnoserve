@@ -4,7 +4,20 @@ import (
 	"bytes"
 	"github.com/gnolang/gno/gno.land/pkg/gnoweb/weburl"
 	"net/http"
+	"net/url"
 )
+
+type GnoURL struct {
+	// Example full path:
+	// https://labsnet.fly.dev/r/buidlthefuture000/events/gnolandlaunch:edit?event=1&session=2
+
+	Domain   string     // gno.land
+	Path     string     // r/buidlthefuture000/events/gnolandlaunch
+	Args     string     // edit
+	WebQuery url.Values // help&a=b // what causes this??
+	Query    url.Values // event=1&session=2
+	File     string     // gnolandlaunch // has .gno??
+}
 
 func ParseSvgUrl(r *http.Request) (*weburl.GnoURL, error) {
 	gnourl, _ := weburl.ParseFromURL(r.URL)

@@ -11,9 +11,9 @@ var (
 	rows = []string{"0", "1", "2", "3", "4"}
 	quad = []string{"z", "y", "x", "w"}
 
-	gx    = 25 // grid size to populate
-	gy    = 25
-	mult  = 2
+	gx   = 25 // grid size to populate
+	gy   = 25
+	mult = 2
 )
 
 func pixelColors() (pixels []ColorPixel) {

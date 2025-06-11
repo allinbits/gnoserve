@@ -1,11 +1,12 @@
 package gnomark
 
 import (
+	"std"
 	"strings"
+	"time"
 )
 
-// TODO: build an interface and registry for parsers and renderers
-// convert this example to be hosted as a template frame in the new registry
+type Frame = func(path string, props ...interface{}) string
 
 type WebHost struct {
 	Base string
@@ -13,46 +14,27 @@ type WebHost struct {
 	Path string
 }
 
-var (
-	webHost = &WebHost{
-		Base: "https://cdn.jsdelivr.net/gh/pflow-xyz/pflow-app@",
-		Tag:  "0.2.1",
-		Path: "/static/",
-	}
-)
-
-func render(source string) string {
-	return templateHtml("{CDN}", webHost.Cdn(), source)
+func (wh *WebHost) Frame(element, source string) string {
+	var sb strings.Builder
+	sb.WriteString("<")
+	sb.WriteString(element)
+	sb.WriteString(">\n")
+	sb.WriteString(source)
+	sb.WriteString("\n</")
+	sb.WriteString(element)
+	sb.WriteString(">\n")
+	sb.WriteString("<script src=\"")
+	sb.WriteString(wh.Base + wh.Tag + wh.Path) // full CDN path
+	sb.WriteString(element)
+	sb.WriteString(".js\"></script>\n")
+	return sb.String()
 }
 
-// REVIEW: make this more generic
-func templateHtml(key, value, source string) string {
-	out := strings.ReplaceAll(htmlContent, key, value)
-	return strings.ReplaceAll(out, "{SOURCE}", source)
+type Record struct {
+	TagName      string
+	WebHost      WebHost
+	Frame        interface{}
+	RegisteredBy std.Realm
+	RegisteredAt time.Time
+	UpdatedAt    time.Time
 }
-
-var htmlContent = `
-    <style type="text/css">
-        @import url("{CDN}pflow.css");
-    </style>
-    <svg id="svgCanvas" width="100%" height="100%"  xmlns="http://www.w3.org/2000/svg">
-        <foreignObject height="100%" width="100%" x="0" y="0">
-            <object id="svgObject" type="image/svg+xml" data="{CDN}model.svg"></object>
-        </foreignObject>
-        <g id="toolbar">
-            <g id="status" transform="translate(5, 607)" >
-                <rect x="0" y="0" width="140" height="20" fill="#fff" rx="5" ry="5"/>
-                <text x="10" y="15">Status: Ready</text>
-            </g>
-            <g id="playBtn" transform="translate(148, 604)" >
-                <circle cx="12" cy="11" r="20" fill="transparent" stroke="transparent" stroke-width="2" />
-                <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2m0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8m-2.5-3.5 7-4.5-7-4.5z"></path>
-            </g>
-        </g>
-        <g id="history" transform="translate(5, 605)" ></g>
-        <foreignObject height="50%" width="98%" x="0" y="635">
-            <textarea id="source">{SOURCE}</textarea>
-        </foreignObject>
-    </svg>
-    <script src="{CDN}pflow.js"></script>
-`

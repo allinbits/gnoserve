@@ -35,7 +35,7 @@ type Item struct {
 }
 
 func RssTime(t time.Time) string {
-    return t.Format("02 Jan 2006 15:04 -0700")
+	return t.Format("02 Jan 2006 15:04 -0700")
 }
 
 func (item *Item) ToJson() string {

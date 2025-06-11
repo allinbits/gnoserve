@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Wallet Frame</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <style>
+    body {
+      font-family: sans-serif;
+      max-width: 500px;
+      margin: 2em auto;
+      text-align: center;
+    }
+    button {
+      padding: 0.75em 1.5em;
+      font-size: 1.2em;
+      border: none;
+      border-radius: 8px;
+      background-color: #4CAF50;
+      color: white;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: #45a049;
+    }
+    pre {
+      text-align: left;
+      margin-top: 2em;
+      background: #f8f8f8;
+      padding: 1em;
+      border-radius: 8px;
+    }
+  </style>
+</head>
+<body>
+  <h1>Open Wallet Frame</h1>
+  <p>Click below to open a blockchain wallet.</p>
+  <button onclick="sendWalletRequest()">Open Wallet</button>
+
+  <pre id="output"></pre>
+
+  <script type="application/ld+json" id="frame-spec">
+  {
+    "@context": "https://schema.org",
+    "@type": "Frame",
+    "name": "Open Wallet Frame",
+    "potentialAction": {
+      "@type": "WalletInteractionRequest",
+      "method": "open",
+      "chain": "eth-mainnet",
+      "address": "0x7f1ed3d3aac8903f869eeb32182265dc34106353"
+    }
+  }
+  </script>
+
+  <script>
+    function sendWalletRequest() {
+      const spec = JSON.parse(document.getElementById('frame-spec').textContent);
+      const action = spec.potentialAction;
+
+      const message = {
+        "@type": "FrameResponse",
+        "action": action
+      };
+
+      // Simulate message dispatch to host app
+      document.getElementById("output").textContent = JSON.stringify(message, null, 2);
+
+      // Optional: real-world version would `postMessage()` to parent or trigger a native handler
+      // window.parent.postMessage(message, "*");
+    }
+  </script>
+</body>
+</html>
