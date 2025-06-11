@@ -3,6 +3,7 @@ package gnomark
 import (
 	"std"
 	"time"
+	"strings"
 )
 
 type Frame interface {
@@ -15,8 +16,17 @@ type WebHost struct {
 	Path string
 }
 
-func (wh *WebHost) Frame(element, source string) string {
-   return "```gnomark\n" + source + "\n```\n"
+func dataKey(tag string) string {
+    parts := strings.Split(tag, "-")
+    if len(parts) > 0 {
+        return parts[1]
+    }
+    panic("unexpected tag format")
+}
+
+func (wh *WebHost) Frame(element, format, source string) string {
+    jsonData := `{"gnoMark": "` + element + `", "format": "` + format + `", "` + dataKey(element) + `": ` + source + `}`
+    return "```gnomark\n\n" + jsonData + "\n\n```"
 }
 
 type Record struct {

@@ -8,11 +8,8 @@ var feed = RssFeed{}
 
 type RssFeed struct {}
 
-func (RssFeed) ToGnoMark(path string) string {
-    if path == "xml" {
-        return `{ "gnoMark": "rss-feed", "format": "xml", "feed": `+ rssData + ` }`
-    }
-    return `{ "gnoMark": "rss-feed", "format": "md", "feed": `+ rssData + ` }`
+func (RssFeed) ToGnoMark(_ string) string {
+    return rssData
 }
 
 var rssData = `

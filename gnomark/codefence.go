@@ -2,6 +2,7 @@ package gnomark
 
 import (
 	"encoding/json"
+	"fmt"
 	"github.com/yuin/goldmark"
 	"github.com/yuin/goldmark/ast"
 	"github.com/yuin/goldmark/parser"
@@ -66,6 +67,7 @@ func isValidJson(data []byte) bool {
 }
 
 func renderCodeBlock(w util.BufWriter, language string, source []byte) error {
+	fmt.Sprintf("renderCodeBlock: language=%s, source=%s", language, string(source))
 	if !isValidJson(source) {
 		_, _ = w.WriteString(noHtmlMsg(""))
 		return nil

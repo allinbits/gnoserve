@@ -95,6 +95,7 @@ func register(elementTag string, webHost gnomark.WebHost, description string) {
 
 	registry.Set(elementTag, gnomark.Record{
 		TagName:      elementTag,
+		Description:  description,
 		WebHost:      webHost, // REVIEW consider validation or white-list by github username
 		RegisteredBy: std.CurrentRealm(),
 		RegisteredAt: time.Now(),
@@ -112,7 +113,15 @@ func RenderTag(element, path string, obj interface{}) string {
         panic("element is not a valid record: " + element)
     }
     var sb strings.Builder
-    sb.WriteString(record.WebHost.Frame(element, obj.(gnomark.Frame).ToGnoMark(path)))
+    format := "md"
+    // TODO: more sophisticated path handling
+    switch path {
+    case "":
+        format = "md"
+    case "xml":
+        format = "xml"
+    }
+    sb.WriteString(record.WebHost.Frame(element, format, obj.(gnomark.Frame).ToGnoMark(path)))
     return sb.String()
 }
 
@@ -120,12 +129,16 @@ func RenderTag(element, path string, obj interface{}) string {
 func Render(path string) string {
 	var sb strings.Builder
 
+    sb.WriteString("# GnoFrame Registry\n\n")
 	registry.IterateByOffset(0, registry.Size(), func(key string, value interface{}) bool {
 		if record, ok := value.(gnomark.Record); ok {
 			if key != record.TagName {
 				panic("registry key mismatch: " + key + " != " + record.TagName)
 			}
 			sb.WriteString("### &lt;" + record.TagName + "&gt;\n")
+			sb.WriteString("- **Description:** " + record.Description + "\n")
+			sb.WriteString("- **Registered at:** " + record.RegisteredAt.Format(time.RFC3339) + "\n")
+			//sb.WriteString("- **CDN by:** " + record.WebHost.Cdn() + "\n")
 		}
 		return false // continue iterating
 	})

@@ -2,6 +2,7 @@ package gnomark
 
 import (
 	"encoding/json"
+	"fmt"
 	"strings"
 )
 
@@ -24,6 +25,7 @@ func getRssFormat(content string) string {
 }
 
 func RenderRss(content string) string {
+	fmt.Printf("RenderRss: content=%s\n", content)
 	format := getRssFormat(content)
 	switch format {
 	case "rss":
