@@ -25,6 +25,8 @@ var (
 func init() {
 	realmAllowPrefix = append(realmAllowPrefix, std.CurrentRealm().PkgPath()+"/") // must be in realm sub-path
 	reservedPrefixes = append(reservedPrefixes, "gno", "gnoland", "gnomark")
+
+	register("rss-feed", webHost)
 }
 
 func hasAllowedPrefix() bool {
@@ -44,9 +46,9 @@ func assertAccess() {
 	}
 }
 
-func Register(elementTag string, frame gnomark.Frame) {
+func Register(elementTag string) {
 	assertAccess()
-	register(elementTag, webHost, frame)
+	register(elementTag, webHost)
 }
 
 func ReservePrefix(prefix string) {
@@ -62,7 +64,7 @@ func ReservePrefix(prefix string) {
 
 func IsReservedPrefix(prefix string) bool {
 	for _, reserved := range reservedPrefixes {
-		if strings.HasPrefix(prefix, reserved+"-") {
+		if strings.HasPrefix(prefix, reserved + "-") {
 			return true
 		}
 	}
@@ -85,50 +87,32 @@ func IsFrameType(frame interface{}) bool {
 	return ok
 }
 
-func register(elementTag string, webHost gnomark.WebHost, frame interface{}) {
+func register(elementTag string, webHost gnomark.WebHost) {
 	if !IsValidTagName(elementTag) {
 		panic("invalid tag name: " + elementTag)
-	}
-
-	if !IsFrameType(frame) {
-		panic("frame must implement Frame interface")
 	}
 
 	registry.Set(elementTag, gnomark.Record{
 		TagName:      elementTag,
 		WebHost:      webHost, // REVIEW consider validation or white-list by github username
-		Frame:        frame,
 		RegisteredBy: std.CurrentRealm(),
 		RegisteredAt: time.Now(),
 		UpdatedAt:    time.Now(),
 	})
 }
 
-func RenderFrame(element, path string, props ...interface{}) string {
+func RenderTag(element, path string, obj interface{}) string {
 	el, ok := registry.Get(element)
 	if !ok {
-		panic("element not registered: " + element)
+		panic("html element not registered: " + element)
 	}
 	record, ok := el.(gnomark.Record)
 	if !ok {
-		panic("element is not a valid Record type: " + element)
-	}
-	if frameFunc, ok := record.Frame.(gnomark.Frame); ok {
-		return frameFunc(path, props...) // call with props
-	}
-	panic("frame is not a valid Frame type: " + element)
-}
-
-func SvgWrapper(xhtml string) string {
-	var sb strings.Builder
-	sb.WriteString("<svg xmlns=\"http://www.w3.org/2000/svg\" >\n")
-	sb.WriteString("<rect x=\"0\" y=\"0\" width=\"100%\" height=\"100%\" fill=\"none\" stroke=\"black\" stroke-width=\"1\"/>\n")
-	sb.WriteString("<foreignObject width=\"100%\" height=\"100%\">\n")
-	sb.WriteString("<div xmlns=\"http://www.w3.org/1999/xhtml\" style=\"font-family: Arial, sans-serif; font-size: 14px;\">\n")
-	sb.WriteString(xhtml)
-	sb.WriteString("</foreignObject>\n")
-	sb.WriteString("</svg>\n")
-	return sb.String()
+        panic("element is not a valid record: " + element)
+    }
+    var sb strings.Builder
+    sb.WriteString(record.WebHost.Frame(element, obj.(gnomark.Frame).ToGnoMark(path)))
+    return sb.String()
 }
 
 func Render(path string) string {
@@ -140,12 +124,6 @@ func Render(path string) string {
 				panic("registry key mismatch: " + key + " != " + record.TagName)
 			}
 			sb.WriteString("### &lt;" + record.TagName + "&gt;\n")
-			if frameFunc, ok := record.Frame.(gnomark.Frame); ok {
-
-				sb.WriteString(SvgWrapper(frameFunc(path))) // call without props for testing
-			} else {
-				panic("frame is not a valid Frame type")
-			}
 		}
 		return false // continue iterating
 	})
