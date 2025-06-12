@@ -11,7 +11,7 @@ class GnoFrame extends HTMLElement {
                 height: 100%;
             }
             </style>
-            <div id="gno-frame-container">
+            <div id="frame-container">
             <slot></slot>
             </div>
         `;
@@ -20,12 +20,19 @@ class GnoFrame extends HTMLElement {
     connectedCallback() {
         let data = {};
         try {
-            data = JSON.parse(this.innerHTML);
+            let rawData = JSON.parse(this.innerHTML);
+            console.log(rawData);
+            if (!rawData["frame"]) {
+                console.error('Frame data is missing "frame" property');
+                return;
+            } else {
+                data = rawData;
+            }
         } catch (error) {
             console.error('Error parsing JSON:', error);
             return;
         }
-        const gnoFrameId = '#'+data.frame+"-container"
+        const gnoFrameId = "#frame-container"
         /* Add your html here */
         this.shadowRoot.querySelector(gnoFrameId).innerHTML = `
             <div>
