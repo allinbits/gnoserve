@@ -149,7 +149,6 @@ const footer = `
 `
 
 func (image *PixelImage) Source(name string) string {
-
 	objectName := strings.Title(name)
 	src := ufmt.Sprintf(heading, name, objectName, objectName, name, objectName, objectName)
 	livePixels := 0
