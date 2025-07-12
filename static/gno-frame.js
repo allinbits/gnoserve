@@ -19,9 +19,13 @@ class GnoFrame extends HTMLElement {
 
     connectedCallback() {
         let data = {};
+        let frameData = {};
+        var cdn = '';
         try {
             console.log(this.innerHTML)
-            data = JSON.parse(this.innerHTML).frame; // REVIEW
+            frameData = JSON.parse(this.innerHTML); // REVIEW
+            data = frameData.frame; // REVIEW
+            cdn = frameData.cdn.static;
         } catch (error) {
             console.error('Error parsing JSON:', error);
             return;
@@ -29,10 +33,10 @@ class GnoFrame extends HTMLElement {
         this.shadowRoot.querySelector("#gno-frame-container").innerHTML = `
             <div>
             <h1>${data.name}</h1>
-            <img src="${data.iconUrl}" alt="${data.name}">
+            <img src="${cdn}${data.iconUrl}" alt="${data.name}">
             <p>${data.version}</p>
             <a href="${data.homeUrl}">Home</a>
-            <img src="${data.imageUrl}" alt="${data.name}">
+            <img src="${cdn}${data.imageUrl}" alt="${data.name}">
             <br />
             <br />
             <button>${data.buttonTitle}</button>
@@ -48,7 +52,6 @@ class GnoFrame extends HTMLElement {
                 buttonTitle: data.buttonTitle,
                 splashImageUrl: data.splashImageUrl,
                 splashBackgroundColor: data.splashBackgroundColor,
-                webhookUrl: data.webhookUrl,
             };
             Promise.resolve({ json: () => payload })
                 .then(response => response.json())
