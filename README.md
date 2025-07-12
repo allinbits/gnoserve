@@ -1,29 +1,29 @@
 # Gnoserve
 
-A forkable repo for 3rd party gno.land / gnoweb rendering.
+A forkable repository for third-party rendering of gno.land / gnoweb.
 
-## Motiviation
+## Motivation
 
-Gno.land rightly restrices many features of a web-page like javascript and css settings.
-Gnoserve provides a foundation to provide custom 'alternate' routes and to extend existing rendering functionality
+gno.land appropriately restricts many web page features, such as JavaScript and CSS configurations.  
+Gnoserve offers a foundation for building custom "alternate" routes and extending rendering functionality.
 
-Examples:
-- serving an SVG image at a new route /svg/r/your-realm-svg
-- serving an RSS Feed at a new route /rss/r/your-realm-svg
-- Enabling other Goldmark extentions like https://github.com/abhinav/goldmark-mermaid
-- Writing your own Goldmark exention see [goldmark/codefence](https://github.com/allinbits/gnoserve/blob/task/gnodev_prototype_v1/gnomark/codefence.go)
+**Examples:**
+- Serve SVG images at a new route: `/svg/r/your-realm-svg`
+- Serve RSS feeds at a new route: `/rss/r/your-realm-svg`
+- Enable additional Goldmark extensions like [goldmark-mermaid](https://github.com/abhinav/goldmark-mermaid)
+- Create your own Goldmark extension (see [goldmark/codefence](https://github.com/allinbits/gnoserve/blob/task/gnodev_prototype_v1/gnomark/codefence.go))
 
 ## Status
 
-Currently gno.land / gnoweb is undergoing a refactor.
-We expect this will make it much easer to host a fork of gnoweb.
+gno.land and gnoweb are currently undergoing refactoring.  
+This is expected to make hosting a fork of gnoweb much easier.
 
-## Workarounds - other ways to extend
+## Workarounds & Alternative Extension Methods
 
-For now the best way to extend is by running your own webserver that uses the gno.land RPC calls to interact.
+For now, the most effective way to extend functionality is to run your own web server that interacts with gno.land via RPC calls.
+
+Look for an upcoming rewrite of this repository, to better integrate with gnodev/gnoweb using a more extensible upstream library.
 
 ## Contributing
 
-Open an issue to ask a question or discuss possible integrations.
-
-Will likely see a full rewrite of this repo in the near future to more cleanly integerate with gnodev / gnoweb
+Feel free to open an issue to ask questions or discuss possible integrations.
